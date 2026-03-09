@@ -13,8 +13,8 @@ export function Navbar() {
           <span className="text-[#4a6080] font-bold text-xl leading-none" style={{ fontFamily: 'var(--font-syne)' }}>.fun</span>
         </Link>
         <div className="hidden md:flex items-center gap-6">
-          <Link href="/" className="text-[#4a6080] hover:text-[#29d4f5] text-xs uppercase tracking-widest transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>👤 Human</Link>
-          <Link href="/" className="text-[#4a6080] hover:text-[#0052ff] text-xs uppercase tracking-widest transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>🤖 Agent</Link>
+          <a href="/#human-tokens" className="text-[#4a6080] hover:text-[#29d4f5] text-xs uppercase tracking-widest transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>👤 Human</a>
+          <a href="/#agent-tokens" className="text-[#4a6080] hover:text-[#0052ff] text-xs uppercase tracking-widest transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>🤖 Agent</a>
           <Link href="/developers" className="text-[#4a6080] hover:text-white text-xs uppercase tracking-widest transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>Developers</Link>
         </div>
         <ConnectButton showBalance={false} chainStatus="none" accountStatus="address" />
