@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import BattleBar from '@/components/BattleBar'
+import DailyPack from '@/components/DailyPack'
 import StatsRow from '@/components/StatsRow'
 import Link from 'next/link'
 
@@ -73,6 +74,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <DailyPack />
 
         {/* Feed battle indicator */}
         <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3 flex items-center justify-between">
