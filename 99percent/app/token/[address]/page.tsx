@@ -151,7 +151,7 @@ export default function TokenPage({ params }: { params: { address: string } }) {
               <span className="text-xs font-bold" style={{ color, fontFamily: 'var(--font-mono)' }}>#1 this week</span>
             </div>
             <div className="h-2 bg-[#1a2a45] overflow-hidden">
-              <div className="h-full transition-all duration-1000" style={{ width: `${token.battleProgress}%`, background: color }} />
+              <div className="h-full transition-all duration-1000 relative overflow-hidden" style={{ width: `${token.battleProgress}%`, background: `linear-gradient(90deg, ${color}88, ${color})` }}><div className="absolute inset-0 animate-pulse" style={{ background: `linear-gradient(90deg, transparent, ${color}66, transparent)` }} /><div className="absolute right-0 top-0 h-full w-6" style={{ background: color, filter: "blur(6px)", opacity: 0.8 }} /></div>
             </div>
             <div className="flex justify-between mt-1">
               <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Weekly volume rank</span>
