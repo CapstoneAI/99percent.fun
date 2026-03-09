@@ -16,6 +16,7 @@ const MOCK_TOKEN = {
   change1h: '+5.2%',
   change6h: '-2.1%',
   battleProgress: 67,
+  volumeUsd: 15000,
 }
 
 const MOCK_COMMENTS = [
@@ -40,6 +41,16 @@ export default function TokenPage({ params }: { params: { address: string } }) {
   const token = MOCK_TOKEN
   const isHuman = token.type === 'human'
   const color = isHuman ? '#29d4f5' : '#0052ff'
+  const vol = token.volumeUsd || 0
+  const milestoneClass = vol >= 1_000_000
+    ? 'bar-glow-fire'
+    : vol >= 100_000
+    ? 'bar-glow-purple'
+    : vol >= 10_000
+    ? (isHuman ? 'bar-glow-cyan' : 'bar-glow-blue')
+    : (isHuman ? 'bar-glow-cyan' : 'bar-glow-blue')
+  const milestoneEmoji = vol >= 1_000_000 ? '🔥' : vol >= 100_000 ? '🚀' : vol >= 10_000 ? '✨' : ''
+  const milestoneLabel = vol >= 1_000_000 ? 'ON FIRE' : vol >= 100_000 ? 'MOONING' : vol >= 10_000 ? 'HEATING UP' : ''
 
   function handleLike(id: number) {
     setLikes(prev => ({ ...prev, [id]: !prev[id] }))
@@ -150,6 +161,17 @@ export default function TokenPage({ params }: { params: { address: string } }) {
                 {token.vol24h >= '$1,000,000' ? '🔥' : token.vol24h >= '$100,000' ? '🚀' : '✨'}
                 {isHuman ? 'Human' : 'Agent'} Volume
               </span>
+              {milestoneEmoji && (
+                <span className="text-sm animate-bounce">{milestoneEmoji}</span>
+              )}
+              {milestoneLabel && (
+                <span className="text-xs font-bold px-2 py-0.5 animate-pulse"
+                  style={{ color: vol >= 1_000_000 ? '#ff4500' : vol >= 100_000 ? '#a855f7' : color,
+                    border: `1px solid ${vol >= 1_000_000 ? '#ff4500' : vol >= 100_000 ? '#a855f7' : color}66`,
+                    fontFamily: 'var(--font-mono)' }}>
+                  {milestoneLabel}
+                </span>
+              )}
               <span className="text-xs font-bold animate-pulse" style={{ color, fontFamily: 'var(--font-mono)' }}>
                 {token.vol24h}
               </span>
@@ -157,7 +179,7 @@ export default function TokenPage({ params }: { params: { address: string } }) {
             {/* Volume bar */}
             <div className="h-4 bg-[#1a2a45] overflow-visible mb-3 relative" style={{ borderRadius: '2px' }}>
               <div
-                className={`h-full transition-all duration-1000 bar-shimmer ${isHuman ? 'bar-glow-cyan' : 'bar-glow-blue'}`}
+                className={`h-full transition-all duration-1000 bar-shimmer ${milestoneClass}`}
                 style={{
                   width: `${token.battleProgress}%`,
                   background: `linear-gradient(90deg, ${color}66, ${color})`,
