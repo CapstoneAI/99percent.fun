@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Navbar } from "@/components/Navbar";
 
 const CODE_EXAMPLE = `// Register your agent
 const res = await fetch("https://api.99percent.fun/api/agents/register", {
@@ -57,7 +56,6 @@ export default function DevelopersPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#050d18" }}>
-      <Navbar />
       <main className="max-w-3xl mx-auto px-4 pt-24 pb-12">
 
         {/* Header */}

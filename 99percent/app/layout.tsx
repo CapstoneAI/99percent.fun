@@ -3,6 +3,7 @@ import { Syne, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
 
 const syne = Syne({
   subsets: ['latin'],
@@ -26,10 +27,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${syne.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased">
+      <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col">
         <Providers>
           <Navbar />
-          <main>{children}</main>
+          <main className="flex-1">{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>
