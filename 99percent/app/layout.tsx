@@ -3,7 +3,6 @@ import { Syne, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import { Navbar } from '@/components/Navbar'
-import TickerStrip from '@/components/TickerStrip'
 import { Footer } from '@/components/Footer'
 
 const syne = Syne({
@@ -31,7 +30,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col">
         <Providers>
           <Navbar />
-          <TickerStrip />
           <main className="flex-1">{children}</main>
           <Footer />
         </Providers>
