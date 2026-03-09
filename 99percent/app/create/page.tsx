@@ -1,118 +1,222 @@
 'use client'
 
-import { useState } from 'react'
-import { useAccount } from 'wagmi'
-import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { useState, useRef } from 'react'
+import TokenCard from '@/components/TokenCard'
+import Link from 'next/link'
 
 export default function CreatePage() {
-  const { isConnected } = useAccount()
-  const [form, setForm] = useState({ name: '', ticker: '', description: '' })
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const { name, value } = e.target
-    setForm((prev) => ({ ...prev, [name]: value }))
-  }
+  const [name, setName] = useState('')
+  const [ticker, setTicker] = useState('')
+  const [description, setDescription] = useState('')
+  const [type, setType] = useState<'human' | 'agent'>('human')
+  const [imageUrl, setImageUrl] = useState<string | undefined>()
+  const fileRef = useRef<HTMLInputElement>(null)
 
   function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
-    setImagePreview(URL.createObjectURL(file))
+    const reader = new FileReader()
+    reader.onload = ev => setImageUrl(ev.target?.result as string)
+    reader.readAsDataURL(file)
   }
 
-  async function handleSubmit() {
-    if (!isConnected || !form.name || !form.ticker) return
-    setLoading(true)
-    setTimeout(() => setLoading(false), 2000)
-  }
+  const humanActive = type === 'human'
 
   return (
-    <div className="min-h-screen bg-[#050d18] px-6 py-12">
-      <div className="max-w-xl mx-auto">
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: 'var(--font-syne)' }}>Cook a Token</h1>
-          <p className="text-[#4a6080] text-xs uppercase tracking-widest" style={{ fontFamily: 'var(--font-mono)' }}>Launch your token on Base via Clanker</p>
+    <main className="min-h-screen bg-[#050d18]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+
+        {/* Header */}
+        <div className="mb-8">
+          <Link href="/" className="text-[#4a6080] text-xs hover:text-white transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>
+            ← Back
+          </Link>
+          <h1 className="text-2xl font-black text-white mt-3" style={{ fontFamily: 'var(--font-syne)' }}>
+            Launch Token
+          </h1>
+          <p className="text-[#4a6080] text-xs mt-1" style={{ fontFamily: 'var(--font-mono)' }}>
+            Join the battle. Choose your side.
+          </p>
         </div>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <label className="text-xs uppercase tracking-widest text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>Token Name *</label>
-            <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="e.g. Based Pepe"
-              className="bg-[#0d1f35] border border-[#1a2a45] text-white px-4 py-3 text-sm outline-none focus:border-[#29d4f5] transition-colors placeholder:text-[#2a3a50]"
-              style={{ fontFamily: 'var(--font-mono)' }} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-xs uppercase tracking-widest text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>Ticker *</label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#29d4f5] text-sm" style={{ fontFamily: 'var(--font-mono)' }}>$</span>
-              <input type="text" name="ticker" value={form.ticker}
-                onChange={(e) => setForm((p) => ({ ...p, ticker: e.target.value.toUpperCase().replace(/[^A-Z]/g, '') }))}
-                placeholder="PEPE" maxLength={10}
-                className="w-full bg-[#0d1f35] border border-[#1a2a45] text-white pl-8 pr-4 py-3 text-sm outline-none focus:border-[#29d4f5] transition-colors placeholder:text-[#2a3a50] uppercase"
-                style={{ fontFamily: 'var(--font-mono)' }} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          {/* LEFT — Form */}
+          <div className="flex flex-col gap-5">
+
+            {/* Type selector */}
+            <div>
+              <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-2 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                I am a...
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => setType('human')}
+                  className="py-3 flex flex-col items-center gap-1 border transition-all"
+                  style={{
+                    borderColor: humanActive ? '#29d4f5' : '#1a2a45',
+                    background: humanActive ? '#29d4f510' : 'transparent',
+                    color: humanActive ? '#29d4f5' : '#4a6080',
+                  }}
+                >
+                  <span className="text-xl">👤</span>
+                  <span className="text-xs font-bold" style={{ fontFamily: 'var(--font-syne)' }}>Human</span>
+                </button>
+                <button
+                  onClick={() => setType('agent')}
+                  className="py-3 flex flex-col items-center gap-1 border transition-all"
+                  style={{
+                    borderColor: !humanActive ? '#0052ff' : '#1a2a45',
+                    background: !humanActive ? '#0052ff10' : 'transparent',
+                    color: !humanActive ? '#0052ff' : '#4a6080',
+                  }}
+                >
+                  <span className="text-xl">🤖</span>
+                  <span className="text-xs font-bold" style={{ fontFamily: 'var(--font-syne)' }}>AI Agent</span>
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-xs uppercase tracking-widest text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>Description <span className="text-[#2a3a50] normal-case tracking-normal">(optional)</span></label>
-            <textarea name="description" value={form.description} onChange={handleChange} placeholder="What's this token about?" rows={3}
-              className="bg-[#0d1f35] border border-[#1a2a45] text-white px-4 py-3 text-sm outline-none focus:border-[#29d4f5] transition-colors placeholder:text-[#2a3a50] resize-none"
-              style={{ fontFamily: 'var(--font-mono)' }} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-xs uppercase tracking-widest text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>Image <span className="text-[#2a3a50] normal-case tracking-normal">(optional)</span></label>
-            <label className="cursor-pointer">
-              <div className="border border-dashed border-[#1a2a45] hover:border-[#29d4f5] transition-colors p-8 flex flex-col items-center justify-center gap-2 bg-[#0d1f35]">
-                {imagePreview ? (
-                  <img src={imagePreview} alt="preview" className="w-20 h-20 object-cover" />
+
+            {/* Image upload */}
+            <div>
+              <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-2 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                Token Image
+              </label>
+              <div
+                onClick={() => fileRef.current?.click()}
+                className="border border-dashed border-[#1a2a45] h-28 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-[#29d4f5] transition-colors"
+                style={{ background: '#0d1f35' }}
+              >
+                {imageUrl ? (
+                  <img src={imageUrl} alt="preview" className="h-full w-full object-contain p-2" />
                 ) : (
                   <>
-                    <span className="text-2xl opacity-30">🖼</span>
-                    <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Click to upload</span>
+                    <span className="text-2xl">🖼️</span>
+                    <span className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>
+                      Click to upload
+                    </span>
                   </>
                 )}
               </div>
-              <input type="file" accept="image/*" onChange={handleImage} className="hidden" />
-            </label>
-          </div>
+              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleImage} />
+            </div>
 
-          {/* Fee box */}
-          <div className="border border-[#1a2a45] bg-[#0d1f35] p-4 flex flex-col gap-2">
-            <div className="flex justify-between">
-              <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Platform fee</span>
-              <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>$1.00</span>
+            {/* Name */}
+            <div>
+              <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-2 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                Token Name
+              </label>
+              <input
+                value={name}
+                onChange={e => setName(e.target.value)}
+                placeholder="e.g. Based Pepe"
+                maxLength={32}
+                className="w-full bg-[#0d1f35] border border-[#1a2a45] px-3 py-2.5 text-white text-sm outline-none focus:border-[#29d4f5] transition-colors"
+                style={{ fontFamily: 'var(--font-mono)' }}
+              />
             </div>
-            <div className="flex justify-between">
-              <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Est. gas</span>
-              <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>~$0.30</span>
-            </div>
-            <div className="border-t border-[#1a2a45] pt-2 flex justify-between">
-              <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Total</span>
-              <span className="text-[#29d4f5] text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>~$1.30</span>
-            </div>
-            <div className="border-t border-[#1a2a45] pt-2 flex flex-col gap-1">
-              <p className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>
-                You earn <span className="text-[#29d4f5]">40%</span> of all trading fees forever
-              </p>
-              <p className="text-[#2a3a50] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>
-                Clanker deploy fee: free · Powered by Base
-              </p>
-            </div>
-          </div>
 
-          {isConnected ? (
-            <button onClick={handleSubmit} disabled={loading || !form.name || !form.ticker}
-              className="w-full bg-[#29d4f5] text-[#050d18] font-bold py-4 text-sm uppercase tracking-widest hover:bg-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ fontFamily: 'var(--font-syne)' }}>
-              {loading ? 'Launching...' : 'Launch Token →'}
+            {/* Ticker */}
+            <div>
+              <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-2 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                Ticker
+              </label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#4a6080] text-sm" style={{ fontFamily: 'var(--font-mono)' }}>$</span>
+                <input
+                  value={ticker}
+                  onChange={e => setTicker(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8))}
+                  placeholder="BPEPE"
+                  className="w-full bg-[#0d1f35] border border-[#1a2a45] pl-7 pr-3 py-2.5 text-white text-sm outline-none focus:border-[#29d4f5] transition-colors"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                />
+              </div>
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-2 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                Description
+              </label>
+              <textarea
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+                placeholder="Tell the story of your token..."
+                rows={3}
+                maxLength={200}
+                className="w-full bg-[#0d1f35] border border-[#1a2a45] px-3 py-2.5 text-white text-sm outline-none focus:border-[#29d4f5] transition-colors resize-none"
+                style={{ fontFamily: 'var(--font-mono)' }}
+              />
+              <div className="text-right text-xs text-[#4a6080] mt-1" style={{ fontFamily: 'var(--font-mono)' }}>
+                {description.length}/200
+              </div>
+            </div>
+
+            {/* Fee notice */}
+            <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3 flex items-center gap-3">
+              <span className="text-lg">💰</span>
+              <div>
+                <div className="text-white text-xs font-bold" style={{ fontFamily: 'var(--font-syne)' }}>Launch fee: ~$1.30</div>
+                <div className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>$1 platform + ~$0.30 gas on Base</div>
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button
+              className="w-full py-4 font-black text-sm uppercase tracking-widest transition-opacity hover:opacity-80 disabled:opacity-30"
+              style={{
+                background: type === 'human' ? '#29d4f5' : '#0052ff',
+                color: '#050d18',
+                fontFamily: 'var(--font-syne)',
+              }}
+              disabled={!name || !ticker}
+            >
+              {type === 'human' ? '👤' : '🤖'} Launch as {type === 'human' ? 'Human' : 'Agent'} →
             </button>
-          ) : (
-            <div className="flex flex-col items-center gap-3">
-              <p className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Connect your wallet to launch</p>
-              <ConnectButton />
+          </div>
+
+          {/* RIGHT — Preview */}
+          <div className="flex flex-col items-center gap-6">
+            <div>
+              <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-4 block text-center" style={{ fontFamily: 'var(--font-mono)' }}>
+                Live Preview
+              </label>
+              <TokenCard
+                name={name || 'Token Name'}
+                ticker={ticker || 'TICKER'}
+                type={type}
+                imageUrl={imageUrl}
+                preview={true}
+              />
             </div>
-          )}
+
+            <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3 w-44 text-center">
+              <div className="text-[#4a6080] text-xs mb-1" style={{ fontFamily: 'var(--font-mono)' }}>This is how it appears</div>
+              <div className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>in the feed & trending</div>
+              <div className="mt-2 text-xs" style={{ fontFamily: 'var(--font-mono)', color: type === 'human' ? '#29d4f5' : '#0052ff' }}>
+                Water fills as volume grows 💧
+              </div>
+            </div>
+
+            {/* Water level legend */}
+            <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3 w-44">
+              <div className="text-[#4a6080] text-xs mb-2 text-center" style={{ fontFamily: 'var(--font-mono)' }}>Volume milestones</div>
+              {[
+                { label: '$1M+', icon: '🔥', text: 'ON FIRE' },
+                { label: '$100K', icon: '🚀', text: 'MOONING' },
+                { label: '$10K', icon: '✨', text: 'HEATING UP' },
+                { label: '$0', icon: '💧', text: 'Just launched' },
+              ].map(m => (
+                <div key={m.label} className="flex items-center gap-2 py-0.5">
+                  <span className="text-xs">{m.icon}</span>
+                  <span className="text-xs text-white" style={{ fontFamily: 'var(--font-mono)' }}>{m.label}</span>
+                  <span className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>{m.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
