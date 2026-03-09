@@ -30,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col">
         <Providers>
           <Navbar />
+        <TickerStrip />
           <main className="flex-1">{children}</main>
           <Footer />
         </Providers>

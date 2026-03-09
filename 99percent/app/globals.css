@@ -79,3 +79,16 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-syne); }
   animation: glow-pulse 0.8s infinite;
   --glow-color: #ff450099;
 }
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
