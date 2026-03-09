@@ -10,6 +10,9 @@ export default function CreatePage() {
   const [description, setDescription] = useState('')
   const [type, setType] = useState<'human' | 'agent'>('human')
   const [imageUrl, setImageUrl] = useState<string | undefined>()
+  const [twitter, setTwitter] = useState('')
+  const [telegram, setTelegram] = useState('')
+  const [website, setWebsite] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
   function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
@@ -149,6 +152,45 @@ export default function CreatePage() {
               />
               <div className="text-right text-xs text-[#4a6080] mt-1" style={{ fontFamily: 'var(--font-mono)' }}>
                 {description.length}/200
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div>
+              <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-2 block" style={{ fontFamily: 'var(--font-mono)' }}>
+                Socials <span className="text-[#2a3a50]">(optional)</span>
+              </label>
+              <div className="flex flex-col gap-2">
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm">𝕏</span>
+                  <input
+                    value={twitter}
+                    onChange={e => setTwitter(e.target.value)}
+                    placeholder="https://x.com/yourtoken"
+                    className="w-full bg-[#0d1f35] border border-[#1a2a45] pl-8 pr-3 py-2.5 text-white text-xs outline-none focus:border-[#29d4f5] transition-colors"
+                    style={{ fontFamily: 'var(--font-mono)' }}
+                  />
+                </div>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm">✈️</span>
+                  <input
+                    value={telegram}
+                    onChange={e => setTelegram(e.target.value)}
+                    placeholder="https://t.me/yourtoken"
+                    className="w-full bg-[#0d1f35] border border-[#1a2a45] pl-8 pr-3 py-2.5 text-white text-xs outline-none focus:border-[#29d4f5] transition-colors"
+                    style={{ fontFamily: 'var(--font-mono)' }}
+                  />
+                </div>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm">🌐</span>
+                  <input
+                    value={website}
+                    onChange={e => setWebsite(e.target.value)}
+                    placeholder="https://yourtoken.com"
+                    className="w-full bg-[#0d1f35] border border-[#1a2a45] pl-8 pr-3 py-2.5 text-white text-xs outline-none focus:border-[#29d4f5] transition-colors"
+                    style={{ fontFamily: 'var(--font-mono)' }}
+                  />
+                </div>
               </div>
             </div>
 
