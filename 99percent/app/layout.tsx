@@ -3,6 +3,7 @@ import { Syne, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import { Navbar } from '@/components/Navbar'
+import TickerStrip from '@/components/TickerStrip'
 import { Footer } from '@/components/Footer'
 
 const syne = Syne({
