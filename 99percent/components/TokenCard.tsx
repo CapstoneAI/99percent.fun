@@ -25,7 +25,7 @@ function shortAddr(addr: string): string {
   return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
 }
 
-export function TokenCard({ token }: { token: Token }) {
+export default function TokenCard({ token }: { token: Token }) {
   const isUp = token.change24h >= 0;
 
   return (
