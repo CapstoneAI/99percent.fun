@@ -3,14 +3,17 @@
 import { useState, useEffect } from 'react'
 import TokenCard from '@/components/TokenCard'
 
-function getTimeUntilMidnightUTC() {
+function getSecondsUntilMidnightUTC() {
   const now = new Date()
   const midnight = new Date()
   midnight.setUTCHours(24, 0, 0, 0)
-  const diff = midnight.getTime() - now.getTime()
-  const h = Math.floor(diff / 3600000)
-  const m = Math.floor((diff % 3600000) / 60000)
-  const s = Math.floor((diff % 60000) / 1000)
+  return Math.floor((midnight.getTime() - now.getTime()) / 1000)
+}
+
+function formatCountdown(seconds: number) {
+  const h = Math.floor(seconds / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  const s = seconds % 60
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
@@ -21,125 +24,195 @@ const MOCK_TOKEN = {
   volumeUsd: 42000,
 }
 
+type State = 'idle' | 'shaking' | 'exploding' | 'revealed'
+
 export default function DailyPack() {
-  const [state, setState] = useState<'idle' | 'opening' | 'revealed'>('idle')
-  const [countdown, setCountdown] = useState(getTimeUntilMidnightUTC())
+  const [state, setState] = useState<State>('idle')
+  const [countdown, setCountdown] = useState(getSecondsUntilMidnightUTC())
   const [alreadyOpened, setAlreadyOpened] = useState(false)
+  const [particles, setParticles] = useState<{id:number,x:number,y:number,color:string}[]>([])
 
   useEffect(() => {
-    const interval = setInterval(() => setCountdown(getTimeUntilMidnightUTC()), 1000)
-    return () => clearInterval(interval)
+    const today = new Date().toUTCString().split(' ').slice(0,4).join('-')
+    const opened = localStorage.getItem('dailypack_date')
+    if (opened === today) setAlreadyOpened(true)
   }, [])
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0]
-    const opened = localStorage.getItem('dailypack')
-    if (opened === today) setAlreadyOpened(true)
+    const interval = setInterval(() => setCountdown(getSecondsUntilMidnightUTC()), 1000)
+    return () => clearInterval(interval)
   }, [])
 
   function handleOpen() {
     if (alreadyOpened || state !== 'idle') return
-    setState('opening')
+
+    // Step 1: shake
+    setState('shaking')
+
+    // Step 2: explode
+    setTimeout(() => {
+      setState('exploding')
+      const colors = ['#29d4f5', '#0052ff', '#ffffff', '#a855f7', '#29d4f5']
+      setParticles(Array.from({length: 18}, (_, i) => ({
+        id: i,
+        x: Math.random() * 200 - 100,
+        y: Math.random() * 200 - 100,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      })))
+    }, 800)
+
+    // Step 3: reveal
     setTimeout(() => {
       setState('revealed')
-      const today = new Date().toISOString().split('T')[0]
-      localStorage.setItem('dailypack', today)
+      const today = new Date().toUTCString().split(' ').slice(0,4).join('-')
+      localStorage.setItem('dailypack_date', today)
       setAlreadyOpened(true)
-    }, 1200)
+    }, 1600)
   }
 
-  const color = '#29d4f5'
+  const shakeStyle = state === 'shaking' ? {
+    animation: 'pack-shake 0.15s ease-in-out infinite'
+  } : {}
+
+  const explodeStyle = state === 'exploding' ? {
+    animation: 'pack-explode 0.4s ease-out forwards'
+  } : {}
 
   return (
-    <section className="border border-[#1a2a45] bg-[#0d1f35] p-5">
+    <section className="border border-[#1a2a45] bg-[#0d1f35] p-5 relative overflow-hidden">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-sm font-black text-white uppercase tracking-widest" style={{ fontFamily: 'var(--font-syne)' }}>
             🎁 Daily Pack
           </h2>
           <p className="text-xs text-[#4a6080] mt-0.5" style={{ fontFamily: 'var(--font-mono)' }}>
-            One random token gets the spotlight every day
+            One random token gets the spotlight — once every 24h
           </p>
         </div>
-        {state === 'revealed' || alreadyOpened ? (
+        {(alreadyOpened || state === 'revealed') && (
           <div className="text-right">
             <div className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>Next pack in</div>
-            <div className="text-sm font-bold" style={{ color, fontFamily: 'var(--font-mono)' }}>{countdown}</div>
+            <div className="text-sm font-bold" style={{ color: '#29d4f5', fontFamily: 'var(--font-mono)' }}>
+              {formatCountdown(countdown)}
+            </div>
           </div>
-        ) : null}
+        )}
       </div>
 
-      <div className="flex items-center gap-6">
-        <div
-          onClick={handleOpen}
-          className="relative flex-shrink-0 w-32 h-40 border-2 flex flex-col items-center justify-center gap-2 select-none"
-          style={{
-            borderColor: alreadyOpened ? '#1a2a45' : color,
-            background: alreadyOpened ? '#080f1c' : '#0d2030',
-            cursor: alreadyOpened ? 'default' : 'pointer',
-            opacity: state === 'opening' ? 0 : 1,
-            transition: state === 'opening' ? 'opacity 0.3s ease 0.9s' : 'all 0.3s',
-          }}
-        >
-          {alreadyOpened && state !== 'opening' ? (
-            <>
-              <span className="text-3xl opacity-30">📦</span>
-              <span className="text-xs text-[#2a3a50] text-center px-2" style={{ fontFamily: 'var(--font-mono)' }}>
-                Come back tomorrow
-              </span>
-            </>
-          ) : (
-            <>
-              <span className="text-4xl" style={{ animation: 'float 2s ease-in-out infinite' }}>🎁</span>
-              <span className="text-xs font-bold uppercase tracking-widest" style={{ color, fontFamily: 'var(--font-mono)' }}>
-                OPEN
-              </span>
-            </>
-          )}
-        </div>
+      <div className="flex items-center gap-8 min-h-[160px]">
 
-        {state === 'revealed' ? (
-          <div className="flex items-center gap-4 animate-fade-in">
-            <div>
-              <div className="text-xs text-[#4a6080] mb-2" style={{ fontFamily: 'var(--font-mono)' }}>
-                ⚡ Today's spotlight token
-              </div>
-              <TokenCard
-                name={MOCK_TOKEN.name}
-                ticker={MOCK_TOKEN.ticker}
-                type={MOCK_TOKEN.type}
-                volumeUsd={MOCK_TOKEN.volumeUsd}
+        {/* Pack box */}
+        {state !== 'revealed' && (
+          <div
+            onClick={handleOpen}
+            className="relative flex-shrink-0 w-36 h-44 border-2 flex flex-col items-center justify-center gap-3 select-none"
+            style={{
+              borderColor: alreadyOpened ? '#1a2a45' : '#29d4f5',
+              background: alreadyOpened ? '#080f1c' : 'linear-gradient(135deg, #0d2030, #0d1f35)',
+              cursor: alreadyOpened ? 'default' : 'pointer',
+              boxShadow: alreadyOpened ? 'none' : '0 0 20px #29d4f520',
+              ...shakeStyle,
+              ...explodeStyle,
+            }}
+          >
+            {/* Particles */}
+            {state === 'exploding' && particles.map(p => (
+              <div
+                key={p.id}
+                className="absolute w-2 h-2 rounded-full pointer-events-none"
+                style={{
+                  background: p.color,
+                  left: '50%',
+                  top: '50%',
+                  animation: `particle-fly 0.6s ease-out forwards`,
+                  '--tx': `${p.x}px`,
+                  '--ty': `${p.y}px`,
+                } as React.CSSProperties}
               />
-            </div>
-            <div className="flex flex-col gap-2">
-              <div className="border border-[#29d4f520] bg-[#29d4f508] px-3 py-2">
-                <div className="text-xs font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>📌 Pinned 24h</div>
-                <div className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>Top of the feed</div>
-              </div>
-              <div className="border border-[#29d4f520] bg-[#29d4f508] px-3 py-2">
-                <div className="text-xs font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>⚡ Featured badge</div>
-                <div className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>Visible on all cards</div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div style={{ fontFamily: 'var(--font-mono)' }}>
+            ))}
+
             {alreadyOpened ? (
-              <div className="text-xs text-[#4a6080]">
-                <div className="text-white text-sm font-bold mb-1" style={{ fontFamily: 'var(--font-syne)' }}>Already opened today!</div>
-                <div>New pack drops at midnight UTC</div>
-                <div className="mt-2 text-lg font-bold" style={{ color }}>{countdown}</div>
-              </div>
+              <>
+                <span className="text-4xl opacity-20">📦</span>
+                <span className="text-xs text-[#2a3a50] text-center px-2" style={{ fontFamily: 'var(--font-mono)' }}>
+                  Come back<br/>tomorrow
+                </span>
+              </>
             ) : (
-              <div className="text-xs text-[#4a6080]">
-                <div className="text-white text-sm font-bold mb-1" style={{ fontFamily: 'var(--font-syne)' }}>Open today's pack!</div>
-                <div>One token gets 24h spotlight</div>
-                <div>in the feed + featured badge</div>
-                <div className="mt-2" style={{ color }}>← Click the box to reveal</div>
-              </div>
+              <>
+                <div style={{ fontSize: '3rem', animation: state === 'idle' ? 'float 2s ease-in-out infinite' : 'none' }}>
+                  🎁
+                </div>
+                <span className="text-xs font-black uppercase tracking-widest px-3 py-1"
+                  style={{ color: '#050d18', background: '#29d4f5', fontFamily: 'var(--font-mono)' }}>
+                  OPEN
+                </span>
+                <div className="absolute inset-0 pointer-events-none rounded-sm"
+                  style={{ animation: 'glow-pulse 2s ease-in-out infinite', boxShadow: 'inset 0 0 15px #29d4f515' }} />
+              </>
             )}
           </div>
         )}
+
+        {/* Revealed token */}
+        {state === 'revealed' ? (
+          <div className="flex items-center gap-6 animate-fade-in w-full">
+            <TokenCard
+              name={MOCK_TOKEN.name}
+              ticker={MOCK_TOKEN.ticker}
+              type={MOCK_TOKEN.type}
+              volumeUsd={MOCK_TOKEN.volumeUsd}
+            />
+            <div className="flex flex-col gap-3">
+              <div>
+                <div className="text-white text-sm font-black mb-0.5" style={{ fontFamily: 'var(--font-syne)' }}>
+                  ⚡ Today's Spotlight
+                </div>
+                <div className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>
+                  ${MOCK_TOKEN.ticker} is pinned to the top<br/>of the feed for 24 hours
+                </div>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center gap-2 text-xs" style={{ fontFamily: 'var(--font-mono)', color: '#29d4f5' }}>
+                  📌 Pinned in feed for 24h
+                </div>
+                <div className="flex items-center gap-2 text-xs" style={{ fontFamily: 'var(--font-mono)', color: '#29d4f5' }}>
+                  ⚡ Featured badge on card
+                </div>
+              </div>
+              
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('🎁 Just opened today\'s Daily Pack on 99percent.fun!\n\n⚡ $BPEPE is today\'s spotlight token!\n\n👉 https://99percent.one\n\n#Base #DeFi #99percent')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs px-3 py-1.5 border border-[#1a2a45] hover:border-[#29d4f5] hover:text-[#29d4f5] transition-all text-center"
+                style={{ fontFamily: 'var(--font-mono)', color: '#4a6080' }}
+              >
+                Share on 𝕏
+              </a>
+            </div>
+          </div>
+        ) : !alreadyOpened && state === 'idle' ? (
+          <div className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>
+            <div className="text-white text-sm font-bold mb-2" style={{ fontFamily: 'var(--font-syne)' }}>
+              Open today's pack!
+            </div>
+            <div>One lucky token gets pinned</div>
+            <div>to the top of the feed</div>
+            <div>for the next 24 hours 🔥</div>
+            <div className="mt-3" style={{ color: '#29d4f5' }}>← Click to reveal</div>
+          </div>
+        ) : alreadyOpened ? (
+          <div className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>
+            <div className="text-white text-sm font-bold mb-2" style={{ fontFamily: 'var(--font-syne)' }}>
+              Already opened today!
+            </div>
+            <div>Come back tomorrow for</div>
+            <div>a new spotlight token</div>
+            <div className="mt-3 text-xl font-bold" style={{ color: '#29d4f5' }}>
+              {formatCountdown(countdown)}
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   )
