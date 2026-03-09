@@ -118,6 +118,15 @@ export default function TokenPage({ params }: { params: { address: string } }) {
               className="px-3 py-1.5 border border-[#1a2a45] text-[#4a6080] hover:text-white hover:border-[#29d4f5] text-xs transition-all"
               style={{ fontFamily: 'var(--font-mono)' }}>
               Basescan ↗
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🚀 $${token.ticker} on 99percent.fun\n\n${token.type === "human" ? "👤 Human" : "🤖 Agent"} token on Base\n👉 https://99percent.one/token/${params.address}\n\n#Base #DeFi #99percent`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-2 py-1 border border-[#1a2a45] text-xs hover:border-[#29d4f5] hover:text-[#29d4f5] transition-all"
+                style={{ fontFamily: 'var(--font-mono)', color: '#4a6080' }}
+              >
+                Share 𝕏
+              </a>
             </a>
           </div>
         </div>
