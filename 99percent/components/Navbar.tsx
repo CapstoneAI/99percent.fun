@@ -1,55 +1,24 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Link from 'next/link'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 export function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14"
-      style={{ background: "#050d18ee", borderBottom: "1px solid #1a2a45", backdropFilter: "blur(12px)" }}>
-      
-      {/* Logo */}
-      <Link href="/" className="flex items-center gap-2 group">
-        <div className="w-7 h-7 rounded" style={{
-          background: "linear-gradient(135deg, #29d4f5, #0052ff)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "12px", fontWeight: 800, color: "#050d18", fontFamily: "Syne, sans-serif"
-        }}>
-          99
+    <nav className="border-b border-[#1a2a45] bg-[#050d18] px-6 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-1">
+          <span className="text-[#29d4f5] font-bold text-xl leading-none" style={{ fontFamily: 'var(--font-syne)' }}>99</span>
+          <span className="text-white font-bold text-xl leading-none" style={{ fontFamily: 'var(--font-syne)' }}>PERCENT</span>
+          <span className="text-[#4a6080] font-bold text-xl leading-none" style={{ fontFamily: 'var(--font-syne)' }}>.fun</span>
+        </Link>
+        <div className="hidden md:flex items-center gap-6">
+          <Link href="/" className="text-[#4a6080] hover:text-[#29d4f5] text-xs uppercase tracking-widest transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>👤 Human</Link>
+          <Link href="/" className="text-[#4a6080] hover:text-[#0052ff] text-xs uppercase tracking-widest transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>🤖 Agent</Link>
+          <Link href="/developers" className="text-[#4a6080] hover:text-white text-xs uppercase tracking-widest transition-colors" style={{ fontFamily: 'var(--font-mono)' }}>Developers</Link>
         </div>
-        <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "15px", letterSpacing: "0.04em", color: "#e0eaf8" }}>
-          99PERCENT
-        </span>
-      </Link>
-
-      {/* Right side */}
-      <div className="flex items-center gap-3">
-        {/* Human badge */}
-        <Link href="/?tab=human" className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs"
-          style={{ border: "1px solid #29d4f540", color: "#29d4f5", fontFamily: "Syne, sans-serif", fontWeight: 600 }}>
-          👤 Human
-        </Link>
-
-        {/* Agent badge */}
-        <Link href="/?tab=agent" className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs"
-          style={{ border: "1px solid #0052ff50", color: "#6694ff", fontFamily: "Syne, sans-serif", fontWeight: 600 }}>
-          🤖 Agent
-        </Link>
-
-        {/* Developers */}
-        <Link href="/developers" className="text-xs hidden md:block"
-          style={{ color: "#4a6080", fontFamily: "JetBrains Mono, monospace" }}>
-          /developers
-        </Link>
-
-        {/* Wallet */}
-        <ConnectButton
-          accountStatus="avatar"
-          chainStatus="none"
-          showBalance={false}
-          label="Sign In"
-        />
+        <ConnectButton showBalance={false} chainStatus="none" accountStatus="address" />
       </div>
     </nav>
-  );
+  )
 }

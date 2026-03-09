@@ -1,76 +1,45 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-
-interface BattleStats {
-  humanVolume: number;
-  agentVolume: number;
-  humanTokens: number;
-  agentTokens: number;
+interface BattleBarProps {
+  humanVolume: number
+  agentVolume: number
 }
 
-export function BattleBar({ stats }: { stats: BattleStats }) {
-  const total = stats.humanVolume + stats.agentVolume || 1;
-  const humanPct = Math.round((stats.humanVolume / total) * 100);
-  const agentPct = 100 - humanPct;
-
-  const [animated, setAnimated] = useState(false);
-  useEffect(() => { setTimeout(() => setAnimated(true), 100); }, []);
-
-  const fmt = (n: number) =>
-    n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n.toFixed(2);
+export function BattleBar({ humanVolume, agentVolume }: BattleBarProps) {
+  const total = humanVolume + agentVolume
+  const humanPct = total === 0 ? 50 : Math.round((humanVolume / total) * 100)
+  const agentPct = 100 - humanPct
+  const isEmpty = total === 0
 
   return (
-    <div className="card p-4 mb-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <div className="pulse-dot" />
-          <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "13px", color: "#8ba0bf" }}>
-            HUMAN vs AGENT — 24h VOLUME
+    <div className="border-b border-[#1a2a45] px-6 py-5 bg-[#050d18]">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-[#29d4f5] text-xs">👤</span>
+            <span className="text-[#29d4f5] text-xs uppercase tracking-widest font-bold" style={{ fontFamily: 'var(--font-syne)' }}>Human</span>
+            <span className="text-[#29d4f5] text-xs ml-1" style={{ fontFamily: 'var(--font-mono)' }}>{isEmpty ? '—' : `${humanPct}%`}</span>
+          </div>
+          <span className="text-[#4a6080] text-xs uppercase tracking-widest" style={{ fontFamily: 'var(--font-mono)' }}>
+            {isEmpty ? 'No volume yet' : `$${total.toLocaleString()} vol 24h`}
           </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[#0052ff] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>{isEmpty ? '—' : `${agentPct}%`}</span>
+            <span className="text-[#0052ff] text-xs uppercase tracking-widest font-bold" style={{ fontFamily: 'var(--font-syne)' }}>Agent</span>
+            <span className="text-[#0052ff] text-xs">🤖</span>
+          </div>
         </div>
-        <span style={{ fontSize: "11px", color: "#4a6080", fontFamily: "JetBrains Mono, monospace" }}>
-          LIVE
-        </span>
-      </div>
-
-      {/* Volume numbers */}
-      <div className="flex items-end justify-between mb-2">
-        <div>
-          <div style={{ fontSize: "11px", color: "#29d4f5", marginBottom: "2px", fontFamily: "Syne, sans-serif", fontWeight: 600 }}>
-            👤 HUMANS {humanPct}%
-          </div>
-          <div style={{ fontSize: "22px", fontFamily: "Syne, sans-serif", fontWeight: 800, color: "#29d4f5" }}>
-            ${fmt(stats.humanVolume)}
-          </div>
-          <div style={{ fontSize: "10px", color: "#4a6080" }}>{stats.humanTokens} tokens</div>
+        <div className="h-2 w-full bg-[#0d1f35] overflow-hidden flex">
+          {isEmpty ? (
+            <div className="w-full h-full bg-[#1a2a45] opacity-40" />
+          ) : (
+            <>
+              <div className="h-full bg-[#29d4f5] transition-all duration-700" style={{ width: `${humanPct}%` }} />
+              <div className="h-full bg-[#0052ff] transition-all duration-700" style={{ width: `${agentPct}%` }} />
+            </>
+          )}
         </div>
-
-        <div style={{ fontSize: "13px", color: "#4a6080", fontFamily: "Syne, sans-serif", fontWeight: 700 }}>VS</div>
-
-        <div className="text-right">
-          <div style={{ fontSize: "11px", color: "#6694ff", marginBottom: "2px", fontFamily: "Syne, sans-serif", fontWeight: 600 }}>
-            {agentPct}% 🤖 AGENTS
-          </div>
-          <div style={{ fontSize: "22px", fontFamily: "Syne, sans-serif", fontWeight: 800, color: "#6694ff" }}>
-            ${fmt(stats.agentVolume)}
-          </div>
-          <div style={{ fontSize: "10px", color: "#4a6080" }}>{stats.agentTokens} tokens</div>
-        </div>
-      </div>
-
-      {/* Progress bar */}
-      <div className="flex h-2 rounded-full overflow-hidden" style={{ background: "#0a1628", border: "1px solid #1a2a45" }}>
-        <div
-          className="battle-bar-human"
-          style={{ width: animated ? `${humanPct}%` : "50%" }}
-        />
-        <div
-          className="battle-bar-agent"
-          style={{ width: animated ? `${agentPct}%` : "50%" }}
-        />
       </div>
     </div>
-  );
+  )
 }

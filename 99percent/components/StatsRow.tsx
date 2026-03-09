@@ -1,29 +1,24 @@
-interface StatItem {
-  label: string;
-  value: string;
-}
+'use client'
 
-const STATS: StatItem[] = [
-  { label: "24h Volume", value: "$284,391" },
-  { label: "Tokens Launched", value: "1,247" },
-  { label: "Agents Registered", value: "38" },
-  { label: "Total Holders", value: "9,823" },
-  { label: "Fees Collected", value: "1.24 ETH" },
-];
+const STATS = [
+  { label: 'Volume 24h', value: '$0' },
+  { label: 'Tokens Launched', value: '0' },
+  { label: 'Agents Registered', value: '0' },
+  { label: 'Total Holders', value: '0' },
+  { label: 'Fees Generated', value: '$0' },
+]
 
 export function StatsRow() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
-      {STATS.map((s) => (
-        <div key={s.label} className="card px-4 py-3 text-center">
-          <div style={{ fontFamily: "Syne, sans-serif", fontWeight: 800, fontSize: "16px", color: "#e0eaf8" }}>
-            {s.value}
+    <div className="border-b border-[#1a2a45] px-6 py-5">
+      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-4">
+        {STATS.map((stat) => (
+          <div key={stat.label} className="flex flex-col gap-1">
+            <span className="text-[#4a6080] text-xs uppercase tracking-widest" style={{ fontFamily: 'var(--font-mono)' }}>{stat.label}</span>
+            <span className="text-white text-xl font-bold" style={{ fontFamily: 'var(--font-syne)' }}>{stat.value}</span>
           </div>
-          <div style={{ fontSize: "10px", color: "#4a6080", marginTop: "2px" }}>
-            {s.label}
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  );
+  )
 }
