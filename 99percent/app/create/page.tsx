@@ -77,15 +77,15 @@ export default function CreatePage() {
           <div className="border border-[#1a2a45] bg-[#0d1f35] p-4 flex flex-col gap-2">
             <div className="flex justify-between">
               <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Launch fee</span>
-              <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>0.001 ETH</span>
+              <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>0.001 ETH + $1 platform fee</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Est. gas</span>
-              <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>~$0.30</span>
+              <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Platform fee</span>
+              <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>$1.00</span>
             </div>
             <div className="border-t border-[#1a2a45] pt-2 flex justify-between">
               <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Total</span>
-              <span className="text-[#29d4f5] text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>~$3.30</span>
+              <span className="text-[#29d4f5] text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>~$4.30</span>
             </div>
             <p className="text-[#4a6080] text-xs mt-1 pt-2 border-t border-[#1a2a45]" style={{ fontFamily: 'var(--font-mono)' }}>
               You earn <span className="text-[#29d4f5]">40%</span> of all trading fees forever
