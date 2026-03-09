@@ -74,23 +74,31 @@ export default function CreatePage() {
               <input type="file" accept="image/*" onChange={handleImage} className="hidden" />
             </label>
           </div>
+
+          {/* Fee box */}
           <div className="border border-[#1a2a45] bg-[#0d1f35] p-4 flex flex-col gap-2">
-            <div className="flex justify-between">
-              <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Launch fee</span>
-              <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>0.001 ETH + $1 platform fee</span>
-            </div>
             <div className="flex justify-between">
               <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Platform fee</span>
               <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>$1.00</span>
             </div>
+            <div className="flex justify-between">
+              <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Est. gas</span>
+              <span className="text-white text-xs" style={{ fontFamily: 'var(--font-mono)' }}>~$0.30</span>
+            </div>
             <div className="border-t border-[#1a2a45] pt-2 flex justify-between">
               <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Total</span>
-              <span className="text-[#29d4f5] text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>~$4.30</span>
+              <span className="text-[#29d4f5] text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>~$1.30</span>
             </div>
-            <p className="text-[#4a6080] text-xs mt-1 pt-2 border-t border-[#1a2a45]" style={{ fontFamily: 'var(--font-mono)' }}>
-              You earn <span className="text-[#29d4f5]">40%</span> of all trading fees forever
-            </p>
+            <div className="border-t border-[#1a2a45] pt-2 flex flex-col gap-1">
+              <p className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>
+                You earn <span className="text-[#29d4f5]">40%</span> of all trading fees forever
+              </p>
+              <p className="text-[#2a3a50] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>
+                Clanker deploy fee: free · Powered by Base
+              </p>
+            </div>
           </div>
+
           {isConnected ? (
             <button onClick={handleSubmit} disabled={loading || !form.name || !form.ticker}
               className="w-full bg-[#29d4f5] text-[#050d18] font-bold py-4 text-sm uppercase tracking-widest hover:bg-white transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
