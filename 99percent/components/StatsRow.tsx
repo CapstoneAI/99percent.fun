@@ -8,7 +8,7 @@ const STATS = [
   { label: 'Fees Generated', value: '$0' },
 ]
 
-export function StatsRow() {
+export default function StatsRow() {
   return (
     <div className="border-b border-[#1a2a45] px-6 py-5">
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-4">

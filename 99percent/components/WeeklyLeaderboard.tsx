@@ -1,6 +1,6 @@
 'use client'
 
-export function WeeklyLeaderboard() {
+export default function WeeklyLeaderboard() {
   const medals = ['🥇', '🥈', '🥉']
   return (
     <div className="max-w-7xl mx-auto">

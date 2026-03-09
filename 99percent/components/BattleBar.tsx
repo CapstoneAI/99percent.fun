@@ -5,7 +5,7 @@ interface BattleBarProps {
   agentVolume: number
 }
 
-export function BattleBar({ humanVolume, agentVolume }: BattleBarProps) {
+export default function BattleBar({ humanVolume, agentVolume }: BattleBarProps) {
   const total = humanVolume + agentVolume
   const humanPct = total === 0 ? 50 : Math.round((humanVolume / total) * 100)
   const agentPct = 100 - humanPct
