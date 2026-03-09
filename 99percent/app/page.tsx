@@ -43,7 +43,7 @@ export default function Home() {
         </div>
 
         <StatsRow />
-        <BattleBar />
+        <BattleBar humanVolume={0} agentVolume={0} />
         <WeeklyLeaderboard />
 
         <section>
