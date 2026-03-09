@@ -177,35 +177,46 @@ export default function TokenPage({ params }: { params: { address: string } }) {
               </span>
             </div>
             {/* Volume bar */}
-            <div className="h-4 bg-[#1a2a45] overflow-visible mb-3 relative" style={{ borderRadius: '2px' }}>
-              <div
-                className={`h-full transition-all duration-1000 bar-shimmer ${milestoneClass}`}
-                style={{
-                  width: `${token.battleProgress}%`,
-                  background: `linear-gradient(90deg, ${color}66, ${color})`,
-                  borderRadius: '2px',
-                  position: 'relative',
-                }}
-              >
-                {/* Trailing glow tip */}
+            <div style={{ height: 20, background: '#0a1628', borderRadius: 4, overflow: 'visible', position: 'relative', marginBottom: 12 }}>
+              <div style={{
+                height: '100%',
+                width: `${token.battleProgress}%`,
+                borderRadius: 4,
+                position: 'relative',
+                background: vol >= 1_000_000
+                  ? 'linear-gradient(90deg, #ff2200, #ff6600, #ff2200)'
+                  : vol >= 100_000
+                  ? 'linear-gradient(90deg, #7c3aed, #a855f7, #7c3aed)'
+                  : `linear-gradient(90deg, ${color}88, ${color})`,
+                boxShadow: vol >= 1_000_000
+                  ? '0 0 30px 8px #ff440088'
+                  : vol >= 100_000
+                  ? '0 0 25px 6px #a855f788'
+                  : `0 0 20px 4px ${color}88`,
+                animation: vol >= 1_000_000 ? 'glow-pulse 0.6s infinite' : 'glow-pulse 1.2s infinite',
+              }}>
+                {/* Shimmer */}
+                <div className="bar-shimmer" style={{ position: 'absolute', inset: 0, borderRadius: 4 }} />
+                {/* Glow tip */}
                 <div style={{
-                  position: 'absolute', right: -4, top: '50%', transform: 'translateY(-50%)',
-                  width: 12, height: 12, borderRadius: '50%',
-                  background: color, filter: 'blur(4px)', opacity: 1,
-                  boxShadow: `0 0 12px 4px ${color}`,
+                  position: 'absolute', right: -6, top: '50%', transform: 'translateY(-50%)',
+                  width: 16, height: 16, borderRadius: '50%',
+                  background: vol >= 1_000_000 ? '#ff4400' : vol >= 100_000 ? '#a855f7' : color,
+                  filter: 'blur(5px)',
+                  boxShadow: `0 0 20px 8px ${vol >= 1_000_000 ? '#ff4400' : vol >= 100_000 ? '#a855f7' : color}`,
                 }} />
-                {/* Sparkle particles */}
-                {[...Array(4)].map((_, i) => (
+                {/* Sparks */}
+                {vol >= 10_000 && [0,1,2,3,4,5].map(i => (
                   <div key={i} style={{
                     position: 'absolute',
-                    right: Math.random() * 30,
+                    right: 4 + i * 8,
                     top: '50%',
                     transform: 'translateY(-50%)',
                     width: 3, height: 3,
                     borderRadius: '50%',
                     background: 'white',
-                    opacity: 0.8,
-                    animation: `sparkle ${0.8 + i * 0.3}s infinite ${i * 0.2}s`,
+                    animation: `sparkle ${0.6 + i * 0.2}s infinite ${i * 0.15}s`,
+                    boxShadow: `0 0 4px 2px ${color}`,
                   }} />
                 ))}
               </div>
