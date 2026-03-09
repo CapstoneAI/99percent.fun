@@ -155,12 +155,37 @@ export default function TokenPage({ params }: { params: { address: string } }) {
               </span>
             </div>
             {/* Volume bar */}
-            <div className="h-3 bg-[#1a2a45] overflow-hidden mb-3 relative">
-              <div className="h-full transition-all duration-1000 relative overflow-hidden"
-                style={{ width: `${token.battleProgress}%`, background: `linear-gradient(90deg, ${color}44, ${color})`,
-                  boxShadow: `0 0 12px ${color}88` }}>
-                <div className="absolute inset-0 animate-pulse" style={{ background: `linear-gradient(90deg, transparent, ${color}66, transparent)` }} />
-                <div className="absolute right-0 top-0 h-full w-4" style={{ background: color, filter: 'blur(4px)', opacity: 0.9 }} />
+            <div className="h-4 bg-[#1a2a45] overflow-visible mb-3 relative" style={{ borderRadius: '2px' }}>
+              <div
+                className={`h-full transition-all duration-1000 bar-shimmer ${isHuman ? 'bar-glow-cyan' : 'bar-glow-blue'}`}
+                style={{
+                  width: `${token.battleProgress}%`,
+                  background: `linear-gradient(90deg, ${color}66, ${color})`,
+                  borderRadius: '2px',
+                  position: 'relative',
+                }}
+              >
+                {/* Trailing glow tip */}
+                <div style={{
+                  position: 'absolute', right: -4, top: '50%', transform: 'translateY(-50%)',
+                  width: 12, height: 12, borderRadius: '50%',
+                  background: color, filter: 'blur(4px)', opacity: 1,
+                  boxShadow: `0 0 12px 4px ${color}`,
+                }} />
+                {/* Sparkle particles */}
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} style={{
+                    position: 'absolute',
+                    right: Math.random() * 30,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: 3, height: 3,
+                    borderRadius: '50%',
+                    background: 'white',
+                    opacity: 0.8,
+                    animation: `sparkle ${0.8 + i * 0.3}s infinite ${i * 0.2}s`,
+                  }} />
+                ))}
               </div>
             </div>
             {/* Weekly rank */}

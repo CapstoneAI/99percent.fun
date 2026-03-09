@@ -28,3 +28,54 @@ h1,h2,h3,h4,h5,h6 { font-family: var(--font-syne); }
   100% { transform: translateX(-50%); }
 }
 .animate-ticker { animation: ticker 30s linear infinite; }
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px 2px var(--glow-color); }
+  50% { box-shadow: 0 0 20px 6px var(--glow-color); }
+}
+
+.bar-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+.bar-glow-cyan {
+  animation: glow-pulse 1.5s infinite;
+  --glow-color: #29d4f566;
+}
+
+.bar-glow-blue {
+  animation: glow-pulse 1.5s infinite;
+  --glow-color: #0052ff66;
+}
+
+.bar-glow-purple {
+  animation: glow-pulse 1.5s infinite;
+  --glow-color: #a855f788;
+}
+
+.bar-glow-fire {
+  animation: glow-pulse 0.8s infinite;
+  --glow-color: #ff450099;
+}
