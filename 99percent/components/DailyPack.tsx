@@ -97,12 +97,12 @@ export default function DailyPack() {
             ))}
             {alreadyOpened ? (
               <>
-                <span className="text-4xl opacity-20">box</span>
+                <span className="text-4xl opacity-20">📦</span>
                 <span className="text-xs text-[#2a3a50] text-center px-2" style={{fontFamily:'var(--font-mono)'}}>Come back<br/>tomorrow</span>
               </>
             ) : (
               <>
-                <div className="text-5xl" style={{animation:'float 2s ease-in-out infinite'}}>gift</div>
+                <div className="text-5xl" style={{animation:'float 2s ease-in-out infinite'}}>🎁</div>
                 <span className="text-xs font-black uppercase tracking-widest px-3 py-1"
                   style={{color:'#050d18',background:'#29d4f5',fontFamily:'var(--font-mono)'}}>OPEN</span>
               </>
