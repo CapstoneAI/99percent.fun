@@ -1,68 +1,104 @@
-import Link from 'next/link'
+'use client'
 
 interface TokenCardProps {
-  address: string
-  name: string
-  ticker: string
-  type: 'human' | 'agent'
-  price: string
-  mcap: string
-  vol24h: string
-  change24h: string
-  image?: string | null
+  name?: string
+  ticker?: string
+  type?: 'human' | 'agent'
+  imageUrl?: string
+  volumeUsd?: number
+  mcap?: string
   rank?: number
+  preview?: boolean
 }
 
-export default function TokenCard({ address, name, ticker, type, price, mcap, vol24h, change24h, image, rank }: TokenCardProps) {
-  const isHuman = type === 'human'
-  const color = isHuman ? '#29d4f5' : '#0052ff'
-  const isPositive = change24h.startsWith('+')
+function WaterFill({ percent, type }: { percent: number, type: 'human' | 'agent' }) {
+  const color = type === 'human' ? '#29d4f5' : '#0052ff'
 
   return (
-    <Link href={`/token/${address}`}>
-      <div className="border border-[#1a2a45] bg-[#0d1f35] p-4 hover:border-[#29d4f5] transition-all duration-200 cursor-pointer group">
-        <div className="flex items-start gap-3">
-          {rank && (
-            <div className="text-[#1a2a45] text-xs font-bold w-4 flex-shrink-0 mt-1" style={{ fontFamily: 'var(--font-mono)' }}>
-              #{rank}
-            </div>
-          )}
-          <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center text-xl border border-[#1a2a45]" style={{ background: color + '15' }}>
-            {image ? <img src={image} alt={name} className="w-full h-full object-cover" /> : (isHuman ? '👤' : '🤖')}
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-white text-sm font-bold truncate group-hover:text-[#29d4f5] transition-colors" style={{ fontFamily: 'var(--font-syne)' }}>
-                {name}
-              </span>
-              <span className="text-xs px-1.5 py-0.5 flex-shrink-0" style={{ color, background: color + '20', fontFamily: 'var(--font-mono)' }}>
-                ${ticker}
-              </span>
-            </div>
-            <span className="text-xs px-1.5 py-0.5" style={{ color, border: `1px solid ${color}44`, fontFamily: 'var(--font-mono)' }}>
-              {isHuman ? '👤 Human' : '🤖 Agent'}
-            </span>
-          </div>
-          <div className="text-right flex-shrink-0">
-            <div className="text-sm font-bold" style={{ color: isPositive ? '#29d4f5' : '#f87171', fontFamily: 'var(--font-mono)' }}>
-              {change24h}
-            </div>
-            <div className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>24h</div>
-          </div>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div
+        className="absolute bottom-0 left-0 right-0 transition-all duration-1000 ease-in-out"
+        style={{ height: `${Math.min(percent, 100)}%` }}
+      >
+        <div className="absolute -top-3 left-0 right-0 overflow-hidden" style={{ height: '12px' }}>
+          <svg viewBox="0 0 200 12" className="w-full" style={{ animation: 'wave 2s linear infinite' }}>
+            <path
+              d="M0,6 C20,0 40,12 60,6 C80,0 100,12 120,6 C140,0 160,12 180,6 C200,0 220,12 240,6 L240,12 L0,12 Z"
+              fill={color}
+              opacity="0.8"
+            />
+          </svg>
         </div>
-        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-[#1a2a45]">
-          {[
-            { label: 'Price', value: price },
-            { label: 'MCap', value: mcap },
-            { label: 'Vol 24h', value: vol24h },
-          ].map(stat => (
-            <div key={stat.label}>
-              <div className="text-[#4a6080] text-xs uppercase tracking-widest mb-0.5" style={{ fontFamily: 'var(--font-mono)' }}>{stat.label}</div>
-              <div className="text-white text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>{stat.value}</div>
-            </div>
-          ))}
+        <div className="absolute inset-0" style={{ background: `${color}25`, borderTop: `1px solid ${color}60` }} />
+      </div>
+    </div>
+  )
+}
+
+export default function TokenCard({
+  name = '???',
+  ticker = '???',
+  type = 'human',
+  imageUrl,
+  volumeUsd = 0,
+  mcap,
+  rank,
+  preview = false,
+}: TokenCardProps) {
+  const color = type === 'human' ? '#29d4f5' : '#0052ff'
+  const emoji = type === 'human' ? '👤' : '🤖'
+  const percent = preview ? 35 : Math.min((volumeUsd / 1_000_000) * 100, 100)
+
+  const milestone = volumeUsd >= 1_000_000
+    ? '🔥 ON FIRE'
+    : volumeUsd >= 100_000
+    ? '🚀 MOONING'
+    : volumeUsd >= 10_000
+    ? '✨ HEATING UP'
+    : null
+
+  return (
+    <div
+      className="relative w-44 h-44 overflow-hidden border transition-all duration-300 cursor-pointer"
+      style={{ borderColor: '#1a2a45', background: '#0d1f35' }}
+      onMouseEnter={e => (e.currentTarget.style.borderColor = color)}
+      onMouseLeave={e => (e.currentTarget.style.borderColor = '#1a2a45')}
+    >
+      {imageUrl ? (
+        <img src={imageUrl} alt={name} className="absolute inset-0 w-full h-full object-cover opacity-40" />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center text-4xl opacity-10">{emoji}</div>
+      )}
+
+      <WaterFill percent={percent} type={type} />
+
+      <div className="absolute inset-0 flex flex-col justify-between p-2.5" style={{ background: 'linear-gradient(to top, #050d18cc 0%, transparent 60%)' }}>
+        <div className="flex items-start justify-between">
+          {rank && (
+            <span className="text-xs font-bold px-1.5 py-0.5 bg-[#050d18cc]" style={{ fontFamily: 'var(--font-mono)', color: '#4a6080' }}>
+              #{rank}
+            </span>
+          )}
+          <span className="text-xs font-bold px-1.5 py-0.5 ml-auto"
+            style={{ fontFamily: 'var(--font-mono)', color, background: `${color}20` }}>
+            {emoji} {type.toUpperCase()}
+          </span>
+        </div>
+
+        {milestone && (
+          <div className="text-center">
+            <span className="text-xs" style={{ fontFamily: 'var(--font-mono)' }}>{milestone}</span>
+          </div>
+        )}
+
+        <div>
+          <div className="text-white text-xs font-black truncate" style={{ fontFamily: 'var(--font-syne)' }}>{name}</div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs" style={{ color, fontFamily: 'var(--font-mono)' }}>${ticker}</span>
+            {mcap && <span className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>{mcap}</span>}
+          </div>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
