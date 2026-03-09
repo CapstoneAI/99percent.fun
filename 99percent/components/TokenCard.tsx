@@ -1,88 +1,68 @@
-import Link from "next/link";
+import Link from 'next/link'
 
-export interface Token {
-  id: string;
-  name: string;
-  ticker: string;
-  description?: string;
-  imageUrl?: string;
-  price: number;
-  marketCap: number;
-  change24h: number;
-  volume24h: number;
-  type: "human" | "agent";
-  createdAt: string;
-  creator: string;
+interface TokenCardProps {
+  address: string
+  name: string
+  ticker: string
+  type: 'human' | 'agent'
+  price: string
+  mcap: string
+  vol24h: string
+  change24h: string
+  image?: string | null
+  rank?: number
 }
 
-function fmtMcap(n: number): string {
-  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(2)}M`;
-  if (n >= 1_000) return `$${(n / 1_000).toFixed(1)}K`;
-  return `$${n.toFixed(0)}`;
-}
-
-function shortAddr(addr: string): string {
-  return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
-}
-
-export default function TokenCard({ token }: { token: Token }) {
-  const isUp = token.change24h >= 0;
+export default function TokenCard({ address, name, ticker, type, price, mcap, vol24h, change24h, image, rank }: TokenCardProps) {
+  const isHuman = type === 'human'
+  const color = isHuman ? '#29d4f5' : '#0052ff'
+  const isPositive = change24h.startsWith('+')
 
   return (
-    <Link href={`/token/${token.id}`}>
-      <div className="token-card card p-3 flex gap-3">
-        {/* Avatar */}
-        <div className="w-12 h-12 rounded flex-shrink-0 flex items-center justify-center text-xl"
-          style={{ background: "#080f1e", border: "1px solid #1a2a45" }}>
-          {token.imageUrl ? (
-            <img src={token.imageUrl} alt={token.name} className="w-full h-full object-cover rounded" />
-          ) : (
-            <span>🔵</span>
+    <Link href={`/token/${address}`}>
+      <div className="border border-[#1a2a45] bg-[#0d1f35] p-4 hover:border-[#29d4f5] transition-all duration-200 cursor-pointer group">
+        <div className="flex items-start gap-3">
+          {rank && (
+            <div className="text-[#1a2a45] text-xs font-bold w-4 flex-shrink-0 mt-1" style={{ fontFamily: 'var(--font-mono)' }}>
+              #{rank}
+            </div>
           )}
+          <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center text-xl border border-[#1a2a45]" style={{ background: color + '15' }}>
+            {image ? <img src={image} alt={name} className="w-full h-full object-cover" /> : (isHuman ? '👤' : '🤖')}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-white text-sm font-bold truncate group-hover:text-[#29d4f5] transition-colors" style={{ fontFamily: 'var(--font-syne)' }}>
+                {name}
+              </span>
+              <span className="text-xs px-1.5 py-0.5 flex-shrink-0" style={{ color, background: color + '20', fontFamily: 'var(--font-mono)' }}>
+                ${ticker}
+              </span>
+            </div>
+            <span className="text-xs px-1.5 py-0.5" style={{ color, border: `1px solid ${color}44`, fontFamily: 'var(--font-mono)' }}>
+              {isHuman ? '👤 Human' : '🤖 Agent'}
+            </span>
+          </div>
+          <div className="text-right flex-shrink-0">
+            <div className="text-sm font-bold" style={{ color: isPositive ? '#29d4f5' : '#f87171', fontFamily: 'var(--font-mono)' }}>
+              {change24h}
+            </div>
+            <div className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>24h</div>
+          </div>
         </div>
-
-        {/* Info */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5 mb-0.5">
-            {/* Type badge */}
-            <span style={{
-              fontSize: "9px", fontFamily: "Syne, sans-serif", fontWeight: 700,
-              color: token.type === "human" ? "#29d4f5" : "#6694ff",
-              background: token.type === "human" ? "#29d4f515" : "#0052ff15",
-              border: `1px solid ${token.type === "human" ? "#29d4f530" : "#0052ff40"}`,
-              padding: "1px 5px", borderRadius: "3px"
-            }}>
-              {token.type === "human" ? "👤 HUMAN" : "🤖 AGENT"}
-            </span>
-
-            {/* Name */}
-            <span style={{ fontFamily: "Syne, sans-serif", fontWeight: 700, fontSize: "13px", color: "#e0eaf8" }}>
-              {token.name}
-            </span>
-            <span style={{ fontSize: "11px", color: "#4a6080" }}>${token.ticker}</span>
-          </div>
-
-          {/* Description */}
-          {token.description && (
-            <p style={{ fontSize: "10px", color: "#4a6080", lineHeight: 1.4 }} className="truncate">
-              {token.description}
-            </p>
-          )}
-
-          {/* Stats row */}
-          <div className="flex items-center gap-3 mt-1.5">
-            <span style={{ fontSize: "11px", color: "#8ba0bf" }}>
-              mcap <span style={{ color: "#e0eaf8", fontWeight: 600 }}>{fmtMcap(token.marketCap)}</span>
-            </span>
-            <span style={{ fontSize: "11px", color: isUp ? "#29d4f5" : "#ff4d6d" }}>
-              {isUp ? "▲" : "▼"} {Math.abs(token.change24h).toFixed(1)}%
-            </span>
-            <span style={{ fontSize: "10px", color: "#4a6080", marginLeft: "auto" }}>
-              {shortAddr(token.creator)}
-            </span>
-          </div>
+        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-[#1a2a45]">
+          {[
+            { label: 'Price', value: price },
+            { label: 'MCap', value: mcap },
+            { label: 'Vol 24h', value: vol24h },
+          ].map(stat => (
+            <div key={stat.label}>
+              <div className="text-[#4a6080] text-xs uppercase tracking-widest mb-0.5" style={{ fontFamily: 'var(--font-mono)' }}>{stat.label}</div>
+              <div className="text-white text-xs font-bold" style={{ fontFamily: 'var(--font-mono)' }}>{stat.value}</div>
+            </div>
+          ))}
         </div>
       </div>
     </Link>
-  );
+  )
 }
