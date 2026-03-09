@@ -65,10 +65,10 @@ export default function DailyPack() {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-sm font-black text-white uppercase tracking-widest" style={{fontFamily:'var(--font-syne)'}}>
-            \u{1F381} Daily Pack
+            Daily Pack
           </h2>
           <p className="text-xs text-[#4a6080] mt-0.5" style={{fontFamily:'var(--font-mono)'}}>
-            One random token gets the spotlight \u2014 resets at midnight UTC
+            One random token gets the spotlight - resets at midnight UTC
           </p>
         </div>
         {alreadyOpened && (
@@ -97,12 +97,12 @@ export default function DailyPack() {
             ))}
             {alreadyOpened ? (
               <>
-                <span className="text-4xl opacity-20">\u{1F4E6}</span>
+                <span className="text-4xl opacity-20">box</span>
                 <span className="text-xs text-[#2a3a50] text-center px-2" style={{fontFamily:'var(--font-mono)'}}>Come back<br/>tomorrow</span>
               </>
             ) : (
               <>
-                <div style={{fontSize:'3rem',animation:'float 2s ease-in-out infinite'}}>\u{1F381}</div>
+                <div className="text-5xl" style={{animation:'float 2s ease-in-out infinite'}}>gift</div>
                 <span className="text-xs font-black uppercase tracking-widest px-3 py-1"
                   style={{color:'#050d18',background:'#29d4f5',fontFamily:'var(--font-mono)'}}>OPEN</span>
               </>
