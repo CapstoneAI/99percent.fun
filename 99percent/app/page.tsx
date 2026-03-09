@@ -55,7 +55,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {MOCK_TOKENS.map((token, i) => (
-              <TokenCard key={token.address} {...token} rank={i + 1} />
+              <TokenCard key={token.address} token={token} rank={i + 1} />
             ))}
           </div>
         </section>
@@ -66,7 +66,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {humanTokens.map(token => (
-              <TokenCard key={token.address} {...token} />
+              <TokenCard key={token.address} token={token} />
             ))}
           </div>
         </section>
@@ -77,7 +77,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {agentTokens.map(token => (
-              <TokenCard key={token.address} {...token} />
+              <TokenCard key={token.address} token={token} />
             ))}
           </div>
         </section>
