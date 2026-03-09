@@ -3,26 +3,14 @@
 import BattleBar from '@/components/BattleBar'
 import StatsRow from '@/components/StatsRow'
 import WeeklyLeaderboard from '@/components/WeeklyLeaderboard'
-import TokenCard from '@/components/TokenCard'
 import Link from 'next/link'
 
-const MOCK_TOKENS = [
-  { address: '0x0001', name: 'Based Pepe', ticker: 'BPEPE', type: 'human' as const, price: '$0.00042', mcap: '$42,000', vol24h: '$18,400', change24h: '+24.2%' },
-  { address: '0x0002', name: 'AgentX', ticker: 'AGX', type: 'agent' as const, price: '$0.0091', mcap: '$91,000', vol24h: '$14,200', change24h: '+11.5%' },
-  { address: '0x0003', name: 'Moon Frog', ticker: 'MFROG', type: 'human' as const, price: '$0.00017', mcap: '$17,000', vol24h: '$9,800', change24h: '-3.1%' },
-  { address: '0x0004', name: 'NeuralBot', ticker: 'NBOT', type: 'agent' as const, price: '$0.0034', mcap: '$34,000', vol24h: '$7,600', change24h: '+8.9%' },
-  { address: '0x0005', name: 'Degen Chad', ticker: 'CHAD', type: 'human' as const, price: '$0.00088', mcap: '$88,000', vol24h: '$6,100', change24h: '+2.3%' },
-  { address: '0x0006', name: 'AutoTrader', ticker: 'AUTO', type: 'agent' as const, price: '$0.0012', mcap: '$12,000', vol24h: '$4,900', change24h: '-1.7%' },
-]
-
 export default function Home() {
-  const humanTokens = MOCK_TOKENS.filter(t => t.type === 'human')
-  const agentTokens = MOCK_TOKENS.filter(t => t.type === 'agent')
-
   return (
     <main className="min-h-screen bg-[#050d18]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-8">
 
+        {/* Hero */}
         <div className="text-center py-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 border border-[#1a2a45] text-xs text-[#4a6080] mb-4" style={{ fontFamily: 'var(--font-mono)' }}>
             ⚡ Live on Base
@@ -44,8 +32,8 @@ export default function Home() {
 
         <StatsRow />
         <BattleBar humanVolume={0} agentVolume={0} />
-        <WeeklyLeaderboard />
 
+        {/* Trending */}
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-black text-white flex items-center gap-2" style={{ fontFamily: 'var(--font-syne)' }}>
@@ -53,34 +41,21 @@ export default function Home() {
             </h2>
             <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>sorted by vol 24h</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {MOCK_TOKENS.map((token, i) => (
-              <TokenCard key={token.address} {...token} rank={i + 1} />
-            ))}
+          {/* Empty state — verrà popolato con dati reali dal backend */}
+          <div className="border border-[#1a2a45] bg-[#0d1f35] py-16 flex flex-col items-center justify-center gap-3">
+            <div className="text-3xl">🔥</div>
+            <p className="text-[#4a6080] text-sm" style={{ fontFamily: 'var(--font-mono)' }}>No tokens yet. Be the first to launch.</p>
+            <Link
+              href="/create"
+              className="mt-2 px-6 py-2 text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity"
+              style={{ background: '#29d4f5', color: '#050d18', fontFamily: 'var(--font-syne)' }}
+            >
+              Launch Token →
+            </Link>
           </div>
         </section>
 
-        <section id="human-tokens">
-          <div className="flex items-center gap-2 mb-4">
-            <h2 className="text-lg font-black" style={{ fontFamily: 'var(--font-syne)', color: '#29d4f5' }}>👤 Human Tokens</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {humanTokens.map(token => (
-              <TokenCard key={token.address} {...token} />
-            ))}
-          </div>
-        </section>
-
-        <section id="agent-tokens">
-          <div className="flex items-center gap-2 mb-4">
-            <h2 className="text-lg font-black" style={{ fontFamily: 'var(--font-syne)', color: '#0052ff' }}>🤖 Agent Tokens</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {agentTokens.map(token => (
-              <TokenCard key={token.address} {...token} />
-            ))}
-          </div>
-        </section>
+        <WeeklyLeaderboard />
 
       </div>
     </main>
