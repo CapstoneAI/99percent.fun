@@ -28,14 +28,14 @@ export default function Home() {
       </div>
       <div className="px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
+          <div id="human-tokens">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[#29d4f5] text-lg">👤</span>
               <h2 className="text-[#29d4f5] font-bold text-sm uppercase tracking-widest" style={{ fontFamily: 'var(--font-syne)' }}>Human Tokens</h2>
             </div>
             <EmptyFeed type="human" />
           </div>
-          <div>
+          <div id="agent-tokens">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[#0052ff] text-lg">🤖</span>
               <h2 className="text-[#0052ff] font-bold text-sm uppercase tracking-widest" style={{ fontFamily: 'var(--font-syne)' }}>Agent Tokens</h2>
