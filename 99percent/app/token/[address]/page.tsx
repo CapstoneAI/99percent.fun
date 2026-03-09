@@ -144,18 +144,36 @@ export default function TokenPage({ params }: { params: { address: string } }) {
 
           {/* Battle Progress */}
           <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3">
+            {/* Volume milestone */}
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs uppercase tracking-widest" style={{ color, fontFamily: 'var(--font-mono)' }}>
-                ✨ {isHuman ? 'Human' : 'Agent'} Battle Progress
+              <span className="text-xs uppercase tracking-widest flex items-center gap-2" style={{ color, fontFamily: 'var(--font-mono)' }}>
+                {token.vol24h >= '$1,000,000' ? '🔥' : token.vol24h >= '$100,000' ? '🚀' : '✨'}
+                {isHuman ? 'Human' : 'Agent'} Volume
               </span>
-              <span className="text-xs font-bold" style={{ color, fontFamily: 'var(--font-mono)' }}>#1 this week</span>
+              <span className="text-xs font-bold animate-pulse" style={{ color, fontFamily: 'var(--font-mono)' }}>
+                {token.vol24h}
+              </span>
             </div>
-            <div className="h-2 bg-[#1a2a45] overflow-hidden">
-              <div className="h-full transition-all duration-1000 relative overflow-hidden" style={{ width: `${token.battleProgress}%`, background: `linear-gradient(90deg, ${color}88, ${color})` }}><div className="absolute inset-0 animate-pulse" style={{ background: `linear-gradient(90deg, transparent, ${color}66, transparent)` }} /><div className="absolute right-0 top-0 h-full w-6" style={{ background: color, filter: "blur(6px)", opacity: 0.8 }} /></div>
+            {/* Volume bar */}
+            <div className="h-3 bg-[#1a2a45] overflow-hidden mb-3 relative">
+              <div className="h-full transition-all duration-1000 relative overflow-hidden"
+                style={{ width: `${token.battleProgress}%`, background: `linear-gradient(90deg, ${color}44, ${color})`,
+                  boxShadow: `0 0 12px ${color}88` }}>
+                <div className="absolute inset-0 animate-pulse" style={{ background: `linear-gradient(90deg, transparent, ${color}66, transparent)` }} />
+                <div className="absolute right-0 top-0 h-full w-4" style={{ background: color, filter: 'blur(4px)', opacity: 0.9 }} />
+              </div>
             </div>
-            <div className="flex justify-between mt-1">
-              <span className="text-[#4a6080] text-xs" style={{ fontFamily: 'var(--font-mono)' }}>Weekly volume rank</span>
-              <span className="text-xs" style={{ color, fontFamily: 'var(--font-mono)' }}>{token.battleProgress}%</span>
+            {/* Weekly rank */}
+            <div className="flex justify-between items-center">
+              <span className="text-[#4a6080] text-xs uppercase tracking-widest" style={{ fontFamily: 'var(--font-mono)' }}>
+                Weekly Rank
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold px-2 py-0.5" style={{ color, border: `1px solid ${color}44`, fontFamily: 'var(--font-mono)' }}>
+                  #1 {isHuman ? 'Human' : 'Agent'}
+                </span>
+                <span className="text-xs" style={{ color, fontFamily: 'var(--font-mono)' }}>{token.battleProgress}%</span>
+              </div>
             </div>
           </div>
 
