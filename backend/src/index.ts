@@ -53,6 +53,16 @@ app.get('/migrate', async (_, res) => {
   }
 })
 
+// DELETE /admin/tokens/:id — temp admin endpoint
+app.delete('/admin/tokens/:id', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM tokens WHERE id = $1', [req.params.id])
+    res.json({ ok: true })
+  } catch (err) {
+    res.status(500).json({ error: 'DB error' })
+  }
+})
+
 // Health check
 app.get('/health', (_, res) => res.json({ status: 'ok' }))
 
