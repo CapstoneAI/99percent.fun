@@ -14,7 +14,7 @@ export default function Navbar() {
       <nav className="border-b border-[#1a2a45] px-4 sm:px-6 py-3 sticky top-0 z-40" style={{background:'#050d18'}}>
         <div className="max-w-7xl mx-auto flex items-center gap-4">
           <Link href="/" className="flex-shrink-0">
-            <span className="text-white font-black text-lg" style={{fontFamily:'var(--font-syne)'}}>99percent</span>
+            <span className="text-white font-black text-lg" style={{fontFamily:'var(--font-syne)'}}>99Percent.io</span>
           </Link>
           <div className="flex-1 max-w-sm hidden sm:block">
             <input placeholder="Search token or address..."
