@@ -66,14 +66,7 @@ export default function Home() {
           <div className="flex gap-3 overflow-x-auto pb-2" style={{scrollbarWidth:'none'}}>
             {topTokens.length > 0 ? topTokens.map((token, i) => (
               <Link key={token.id} href={`/token/${token.contract_address || token.id}`} className="flex-shrink-0">
-                <TokenCard
-                  name={token.name}
-                  ticker={token.ticker}
-                  type={token.type}
-                  imageUrl={token.image_url}
-                  volumeUsd={Number(token.volume_usd)}
-                  rank={i + 1}
-                />
+                <TokenCard token={token} />
               </Link>
             )) : [...Array(6)].map((_, i) => (
               <div key={i} className="flex-shrink-0 w-44 h-44 border border-[#1a2a45] bg-[#0d1f35] flex items-center justify-center">
