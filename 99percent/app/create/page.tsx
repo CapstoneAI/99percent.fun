@@ -222,7 +222,7 @@ export default function CreatePage() {
           <div className="flex flex-col items-center gap-6">
             <div>
               <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-4 block text-center" style={{fontFamily:'var(--font-mono)'}}>Live Preview</label>
-              <TokenCard name={name||'Token Name'} ticker={ticker||'TICKER'} type={type} imageUrl={imageUrl} preview={true} />
+              <TokenCard token={{ id: 0, name: name||'Token Name', ticker: ticker||'TICKER', type: type, image_url: imageUrl, agent_name: agentName }} />
             </div>
             <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3 w-44">
               <div className="text-[#4a6080] text-xs mb-2 text-center" style={{fontFamily:'var(--font-mono)'}}>Volume milestones</div>
