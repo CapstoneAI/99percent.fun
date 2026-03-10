@@ -81,7 +81,7 @@ export default function Home() {
               </div>
             ))}
             <div className="flex-shrink-0 w-44 h-44 border border-dashed border-[#1a2a45] flex flex-col items-center justify-center gap-2">
-              <span className="text-2xl">rocket</span>
+              <span className="text-2xl">🚀</span>
               <Link href="/create" className="text-xs px-3 py-1 font-bold" style={{background:'#29d4f5',color:'#050d18',fontFamily:'var(--font-syne)'}}>
                 Launch
               </Link>
