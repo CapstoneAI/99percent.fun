@@ -17,14 +17,16 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function load() {
-      setLoading(true)
+    async function load(showLoading = true) {
+      if (showLoading) setLoading(true)
       const [t, s] = await Promise.all([getTokens(filter), getStats()])
       setTokens(t)
       setStats(s)
       setLoading(false)
     }
     load()
+    const interval = setInterval(() => load(false), 10000)
+    return () => clearInterval(interval)
   }, [filter])
 
   const humanVol = tokens.filter(t => t.type === 'human').reduce((a, t) => a + Number(t.volume_usd), 0)
