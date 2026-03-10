@@ -17,6 +17,8 @@ interface Token {
   twitter_url: string
   telegram_url: string
   website_url: string
+  agent_name?: string
+  proof_url?: string
   volume_usd: number
   market_cap: number
   created_at: string
