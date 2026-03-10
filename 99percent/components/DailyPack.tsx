@@ -108,13 +108,7 @@ export default function DailyPack() {
           {state === 'revealed' && token ? (
             <div className="flex items-center gap-6 animate-fade-in w-full">
               <Link href={`/token/${tokenAddress}`}>
-                <TokenCard
-                  name={token.name}
-                  ticker={token.ticker}
-                  type={token.type}
-                  imageUrl={token.image_url}
-                  volumeUsd={token.volume_usd}
-                />
+              <TokenCard token={token} />
               </Link>
               <div className="flex flex-col gap-3">
                 <div>
