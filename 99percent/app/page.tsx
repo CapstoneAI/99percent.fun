@@ -138,15 +138,7 @@ export default function Home() {
           ) : tokens.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
               {tokens.map(token => (
-                <Link key={token.id} href={`/token/${token.contract_address || token.id}`}>
-                  <TokenCard
-                    name={token.name}
-                    ticker={token.ticker}
-                    type={token.type}
-                    imageUrl={token.image_url}
-                    volumeUsd={Number(token.volume_usd)}
-                  />
-                </Link>
+            <TokenCard key={token.id} token={token} />
               ))}
             </div>
           ) : (
