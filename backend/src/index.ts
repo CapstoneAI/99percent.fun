@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { pool } from './db'
+import { uploadImage } from './cloudinary'
 
 dotenv.config()
 
@@ -83,10 +84,19 @@ app.post('/api/tokens', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' })
   }
   try {
+    let finalImageUrl = image_url || null
+    if (image_url && image_url.startsWith('data:')) {
+      try {
+        finalImageUrl = await uploadImage(image_url)
+      } catch (e) {
+        console.error('Image upload failed:', e)
+        finalImageUrl = null
+      }
+    }
     const result = await pool.query(
       `INSERT INTO tokens (name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address]
+      [name, ticker, creator_wallet, type, description, finalImageUrl, twitter_url, telegram_url, website_url, contract_address]
     )
     res.status(201).json({ token: result.rows[0] })
   } catch (err) {
