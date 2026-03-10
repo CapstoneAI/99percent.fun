@@ -109,8 +109,11 @@ app.post('/api/tokens', async (req, res) => {
 // GET /api/tokens/:address
 app.get('/api/tokens/:address', async (req, res) => {
   try {
+    const addr = req.params.address
+    const isId = /^\d+$/.test(addr)
     const result = await pool.query(
-      'SELECT * FROM tokens WHERE contract_address = $1', [req.params.address]
+      isId ? 'SELECT * FROM tokens WHERE id = $1' : 'SELECT * FROM tokens WHERE contract_address = $1',
+      [addr]
     )
     if (!result.rows.length) return res.status(404).json({ error: 'Not found' })
     res.json({ token: result.rows[0] })
