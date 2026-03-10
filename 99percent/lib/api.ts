@@ -40,6 +40,8 @@ export async function createToken(data: {
   telegram_url?: string
   website_url?: string
   contract_address?: string
+  agent_name?: string
+  proof_url?: string
 }) {
   const res = await fetch(`${API_URL}/api/tokens`, {
     method: 'POST',
