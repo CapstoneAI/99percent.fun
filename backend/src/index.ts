@@ -29,6 +29,8 @@ app.get('/migrate', async (_, res) => {
         image_url TEXT,
         twitter_url TEXT,
         telegram_url TEXT,
+        agent_name TEXT,
+        proof_url TEXT,
         website_url TEXT,
         volume_usd DECIMAL DEFAULT 0,
         market_cap DECIMAL DEFAULT 0,
@@ -105,9 +107,9 @@ app.post('/api/tokens', async (req, res) => {
       }
     }
     const result = await pool.query(
-      `INSERT INTO tokens (name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [name, ticker, creator_wallet, type, description, finalImageUrl, twitter_url, telegram_url, website_url, contract_address]
+      `INSERT INTO tokens (name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address, agent_name, proof_url)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
+      [name, ticker, creator_wallet, type, description, finalImageUrl, twitter_url, telegram_url, website_url, contract_address, agent_name || null, proof_url || null]
     )
     res.status(201).json({ token: result.rows[0] })
   } catch (err) {

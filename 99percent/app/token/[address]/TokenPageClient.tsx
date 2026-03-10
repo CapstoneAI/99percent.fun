@@ -266,6 +266,7 @@ export default function TokenPageClient({ token, comments: initialComments, addr
                   {label:'Chain', value: 'Base'},
                   {label:'Type', value: token.type === 'human' ? 'Human' : 'Agent'},
                   {label:'Creator', value: formatWallet(token.creator_wallet)},
+        ...(token.agent_name ? [{label:'Suggested by', value: token.agent_name}] : []),
                 ].map(i => (
                   <div key={i.label} className="flex justify-between">
                     <span className="text-xs text-[#4a6080]" style={{fontFamily:'var(--font-mono)'}}>{i.label}</span>
@@ -273,6 +274,16 @@ export default function TokenPageClient({ token, comments: initialComments, addr
                   </div>
                 ))}
               </div>
+              {token.proof_url && (
+                <a href={token.proof_url} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-2 mt-3 border border-[#0052ff] px-3 py-2 hover:bg-[#0052ff10] transition-all"
+                  style={{fontFamily:'var(--font-mono)'}}>
+                  <span className="text-xs text-[#0052ff] font-bold">🔗 View Agent Proof</span>
+                  <span className="text-xs text-[#4a6080]">
+                    {token.proof_url.startsWith('https://x.com') ? 'X (Twitter)' : 'Telegram'}
+                  </span>
+                </a>
+              )}
               {token.description && (
                 <p className="text-xs text-[#4a6080] mt-3 border-t border-[#1a2a45] pt-3" style={{fontFamily:'var(--font-mono)'}}>
                   {token.description}

@@ -16,6 +16,8 @@ export default function CreatePage() {
   const [twitter, setTwitter] = useState('')
   const [telegram, setTelegram] = useState('')
   const [website, setWebsite] = useState('')
+  const [agentName, setAgentName] = useState('')
+  const [proofUrl, setProofUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
@@ -49,6 +51,8 @@ export default function CreatePage() {
         type,
         description,
         image_url: imageUrl,
+        agent_name: type === 'agent' ? agentName : undefined,
+        proof_url: type === 'agent' ? proofUrl : undefined,
         twitter_url: twitter,
         telegram_url: telegram,
         website_url: website,
@@ -162,6 +166,29 @@ export default function CreatePage() {
                 ))}
               </div>
             </div>
+
+            {type === 'agent' && (
+              <div>
+                <label className="text-xs text-[#4a6080] uppercase tracking-widest mb-2 block" style={{fontFamily:'var(--font-mono)'}}>
+                  Suggested by AI Agent <span className="text-[#2a3a50]">(optional)</span>
+                </label>
+                <div className="flex flex-col gap-2">
+                  <input value={agentName} onChange={e => setAgentName(e.target.value)}
+                    placeholder="@FelixAI"
+                    className="w-full bg-[#0d1f35] border border-[#0052ff] px-3 py-2.5 text-white text-sm outline-none focus:border-[#0052ff] transition-colors"
+                    style={{fontFamily:'var(--font-mono)'}} />
+                  <input value={proofUrl} onChange={e => setProofUrl(e.target.value)}
+                    placeholder="https://x.com/... or https://t.me/..."
+                    className="w-full bg-[#0d1f35] border border-[#0052ff] px-3 py-2.5 text-white text-xs outline-none focus:border-[#0052ff] transition-colors"
+                    style={{fontFamily:'var(--font-mono)'}} />
+                  {proofUrl && !proofUrl.startsWith('https://x.com') && !proofUrl.startsWith('https://t.me') && (
+                    <div className="text-xs text-red-400 mt-1" style={{fontFamily:'var(--font-mono)'}}>
+                      Only x.com or t.me links accepted
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Fee */}
             <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3 flex items-center gap-3">
