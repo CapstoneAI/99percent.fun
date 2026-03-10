@@ -1,0 +1,146 @@
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
+import { pool } from './db'
+
+dotenv.config()
+
+const app = express()
+const PORT = process.env.PORT || 3001
+
+app.use(cors({ origin: '*' }))
+app.use(express.json())
+
+// Health check
+app.get('/health', (_, res) => res.json({ status: 'ok' }))
+
+// GET /api/tokens — feed con filtri
+app.get('/api/tokens', async (req, res) => {
+  const { filter = 'new', type } = req.query
+  try {
+    let orderBy = 'created_at DESC'
+    if (filter === 'trending') orderBy = 'volume_usd DESC'
+    if (filter === 'mcap') orderBy = 'market_cap DESC'
+
+    const typeFilter = type ? `WHERE type = $1` : ''
+    const values = type ? [type] : []
+
+    const result = await pool.query(
+      `SELECT * FROM tokens ${typeFilter} ORDER BY ${orderBy} LIMIT 50`,
+      values
+    )
+    res.json({ tokens: result.rows })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'DB error' })
+  }
+})
+
+// POST /api/tokens — crea token
+app.post('/api/tokens', async (req, res) => {
+  const { name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address } = req.body
+  if (!name || !ticker || !creator_wallet || !type) {
+    return res.status(400).json({ error: 'Missing required fields' })
+  }
+  try {
+    const result = await pool.query(
+      `INSERT INTO tokens (name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+      [name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address]
+    )
+    res.status(201).json({ token: result.rows[0] })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: 'DB error' })
+  }
+})
+
+// GET /api/tokens/:address
+app.get('/api/tokens/:address', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM tokens WHERE contract_address = $1', [req.params.address]
+    )
+    if (!result.rows.length) return res.status(404).json({ error: 'Not found' })
+    res.json({ token: result.rows[0] })
+  } catch (err) {
+    res.status(500).json({ error: 'DB error' })
+  }
+})
+
+// GET /api/stats
+app.get('/api/stats', async (_, res) => {
+  try {
+    const [tokens, volume, humans, agents] = await Promise.all([
+      pool.query('SELECT COUNT(*) FROM tokens'),
+      pool.query('SELECT COALESCE(SUM(volume_usd),0) as total FROM tokens'),
+      pool.query("SELECT COUNT(*) FROM tokens WHERE type='human'"),
+      pool.query("SELECT COUNT(*) FROM tokens WHERE type='agent'"),
+    ])
+    res.json({
+      total_tokens: parseInt(tokens.rows[0].count),
+      total_volume: parseFloat(volume.rows[0].total),
+      human_tokens: parseInt(humans.rows[0].count),
+      agent_tokens: parseInt(agents.rows[0].count),
+    })
+  } catch (err) {
+    res.status(500).json({ error: 'DB error' })
+  }
+})
+
+// GET /api/daily-pick
+app.get('/api/daily-pick', async (_, res) => {
+  const today = new Date().toISOString().slice(0,10)
+  try {
+    let result = await pool.query(
+      'SELECT * FROM tokens WHERE daily_pick_date = $1', [today]
+    )
+    if (!result.rows.length) {
+      // Scegli random tra i token con più volume
+      result = await pool.query(
+        'SELECT * FROM tokens ORDER BY RANDOM() LIMIT 1'
+      )
+      if (result.rows.length) {
+        await pool.query(
+          'UPDATE tokens SET is_daily_pick=TRUE, daily_pick_date=$1 WHERE id=$2',
+          [today, result.rows[0].id]
+        )
+      }
+    }
+    res.json({ token: result.rows[0] || null })
+  } catch (err) {
+    res.status(500).json({ error: 'DB error' })
+  }
+})
+
+// POST /api/comments
+app.post('/api/comments', async (req, res) => {
+  const { token_address, wallet, content } = req.body
+  if (!token_address || !wallet || !content) {
+    return res.status(400).json({ error: 'Missing fields' })
+  }
+  try {
+    const result = await pool.query(
+      'INSERT INTO comments (token_address, wallet, content) VALUES ($1,$2,$3) RETURNING *',
+      [token_address, wallet, content]
+    )
+    res.status(201).json({ comment: result.rows[0] })
+  } catch (err) {
+    res.status(500).json({ error: 'DB error' })
+  }
+})
+
+// GET /api/comments/:address
+app.get('/api/comments/:address', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM comments WHERE token_address=$1 ORDER BY created_at DESC',
+      [req.params.address]
+    )
+    res.json({ comments: result.rows })
+  } catch (err) {
+    res.status(500).json({ error: 'DB error' })
+  }
+})
+
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
