@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import AgentLeaderboard from '@/components/AgentLeaderboard'
 import BattleBar from '@/components/BattleBar'
 import StatsRow from '@/components/StatsRow'
 import DailyPack from '@/components/DailyPack'

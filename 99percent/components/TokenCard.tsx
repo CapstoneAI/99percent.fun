@@ -1,104 +1,142 @@
 'use client'
 
-interface TokenCardProps {
-  name?: string
-  ticker?: string
-  type?: 'human' | 'agent'
-  imageUrl?: string
-  volumeUsd?: number
-  mcap?: string
-  rank?: number
-  preview?: boolean
+import { useState } from 'react'
+import Link from 'next/link'
+
+interface Token {
+  id: number
+  name: string
+  ticker: string
+  contract_address?: string
+  type: 'human' | 'agent'
+  description?: string
+  image_url?: string
+  volume_usd?: number
+  market_cap?: number
+  agent_name?: string
+  proof_url?: string
+  created_at?: string
 }
 
-function WaterFill({ percent, type }: { percent: number, type: 'human' | 'agent' }) {
-  const color = type === 'human' ? '#29d4f5' : '#0052ff'
+export default function TokenCard({ token }: { token: Token }) {
+  const [hovered, setHovered] = useState(false)
+  const isAgent = token.type === 'agent'
+  const accentColor = isAgent ? '#0052ff' : '#29d4f5'
+  const fillColor = isAgent ? '#0052ff' : '#29d4f5'
+  const volume = token.volume_usd || 0
+  const fillPercent = Math.min((volume / 500000) * 100, 100)
+  const href = `/token/${token.contract_address || token.id}`
+
+  function formatVolume(v: number) {
+    if (v >= 1000000) return `$${(v / 1000000).toFixed(1)}M`
+    if (v >= 1000) return `$${(v / 1000).toFixed(0)}K`
+    return `$${v}`
+  }
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <Link href={href} style={{ textDecoration: 'none' }}>
       <div
-        className="absolute bottom-0 left-0 right-0 transition-all duration-1000 ease-in-out"
-        style={{ height: `${Math.min(percent, 100)}%` }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          position: 'relative',
+          border: `1px solid ${hovered ? accentColor : '#1a2a45'}`,
+          background: '#080f1e',
+          width: '100%',
+          minHeight: 200,
+          overflow: 'hidden',
+          cursor: 'pointer',
+          transition: 'border-color 0.2s, box-shadow 0.2s',
+          boxShadow: hovered ? `0 0 20px ${accentColor}22` : 'none',
+        }}
       >
-        <div className="absolute -top-3 left-0 right-0 overflow-hidden" style={{ height: '12px' }}>
-          <svg viewBox="0 0 200 12" className="w-full" style={{ animation: 'wave 2s linear infinite' }}>
-            <path
-              d="M0,6 C20,0 40,12 60,6 C80,0 100,12 120,6 C140,0 160,12 180,6 C200,0 220,12 240,6 L240,12 L0,12 Z"
-              fill={color}
-              opacity="0.8"
-            />
-          </svg>
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          height: `${fillPercent}%`,
+          background: `linear-gradient(180deg, ${fillColor}10, ${fillColor}28)`,
+          borderTop: `1px solid ${fillColor}44`,
+          transition: 'height 1.5s ease',
+        }} />
+
+        <div style={{
+          position: 'absolute', top: 8, right: 8,
+          background: accentColor,
+          color: isAgent ? 'white' : '#050d18',
+          fontSize: 8, fontWeight: 700,
+          padding: '2px 6px',
+          fontFamily: 'var(--font-jetbrains-mono), monospace',
+          letterSpacing: 1, textTransform: 'uppercase',
+        }}>
+          {isAgent ? 'AGENT' : 'HUMAN'}
         </div>
-        <div className="absolute inset-0" style={{ background: `${color}25`, borderTop: `1px solid ${color}60` }} />
-      </div>
-    </div>
-  )
-}
 
-export default function TokenCard({
-  name = '???',
-  ticker = '???',
-  type = 'human',
-  imageUrl,
-  volumeUsd = 0,
-  mcap,
-  rank,
-  preview = false,
-}: TokenCardProps) {
-  const color = type === 'human' ? '#29d4f5' : '#0052ff'
-  const emoji = type === 'human' ? '👤' : '🤖'
-  const percent = preview ? 35 : Math.min((volumeUsd / 1_000_000) * 100, 100)
+        <div style={{
+          position: 'relative', padding: 12,
+          display: 'flex', flexDirection: 'column', gap: 8,
+          height: '100%', boxSizing: 'border-box',
+        }}>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+            <div style={{
+              width: 44, height: 44, flexShrink: 0,
+              background: `${accentColor}15`,
+              border: `1px solid ${accentColor}44`,
+              borderRadius: '50%', overflow: 'hidden',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 20,
+            }}>
+              {token.image_url
+                ? <img src={token.image_url} alt={token.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                : (isAgent ? '🤖' : '👤')}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{
+                color: 'white', fontWeight: 700, fontSize: 14,
+                fontFamily: 'var(--font-syne), sans-serif', letterSpacing: -0.2,
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+              }}>{token.name}</div>
+              <div style={{ color: accentColor, fontSize: 10, fontFamily: 'monospace', marginTop: 1 }}>${token.ticker}</div>
+              {token.market_cap && (
+                <div style={{ color: '#4a6080', fontSize: 9, fontFamily: 'monospace', marginTop: 2 }}>
+                  MCap {formatVolume(token.market_cap)}
+                </div>
+              )}
+            </div>
+          </div>
 
-  const milestone = volumeUsd >= 1_000_000
-    ? '🔥 ON FIRE'
-    : volumeUsd >= 100_000
-    ? '🚀 MOONING'
-    : volumeUsd >= 10_000
-    ? '✨ HEATING UP'
-    : null
-
-  return (
-    <div
-      className="relative w-44 h-44 overflow-hidden border transition-all duration-300 cursor-pointer"
-      style={{ borderColor: '#1a2a45', background: '#0d1f35' }}
-      onMouseEnter={e => (e.currentTarget.style.borderColor = color)}
-      onMouseLeave={e => (e.currentTarget.style.borderColor = '#1a2a45')}
-    >
-      {imageUrl ? (
-        <img src={imageUrl} alt={name} className="absolute inset-0 w-full h-full object-cover opacity-40" />
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-center text-4xl opacity-10">{emoji}</div>
-      )}
-
-      <WaterFill percent={percent} type={type} />
-
-      <div className="absolute inset-0 flex flex-col justify-between p-2.5" style={{ background: 'linear-gradient(to top, #050d18cc 0%, transparent 60%)' }}>
-        <div className="flex items-start justify-between">
-          {rank && (
-            <span className="text-xs font-bold px-1.5 py-0.5 bg-[#050d18cc]" style={{ fontFamily: 'var(--font-mono)', color: '#4a6080' }}>
-              #{rank}
-            </span>
+          {token.description && (
+            <div style={{
+              color: '#6a7a90', fontSize: 10, fontFamily: 'monospace', lineHeight: 1.4,
+              overflow: 'hidden', display: '-webkit-box',
+              WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+            }}>
+              {token.description}
+            </div>
           )}
-          <span className="text-xs font-bold px-1.5 py-0.5 ml-auto"
-            style={{ fontFamily: 'var(--font-mono)', color, background: `${color}20` }}>
-            {emoji} {type.toUpperCase()}
-          </span>
-        </div>
 
-        {milestone && (
-          <div className="text-center">
-            <span className="text-xs" style={{ fontFamily: 'var(--font-mono)' }}>{milestone}</span>
-          </div>
-        )}
+          {isAgent && token.agent_name && (
+            <div style={{ borderTop: '1px solid #0052ff33', paddingTop: 8, marginTop: 'auto' }}>
+              <div style={{
+                color: '#4a6080', fontSize: 8, fontFamily: 'monospace',
+                letterSpacing: 1.5, textTransform: 'uppercase', marginBottom: 3,
+              }}>Suggested by</div>
+              <div style={{ color: '#29d4f5', fontSize: 12, fontWeight: 700, fontFamily: 'monospace' }}>
+                {token.agent_name}
+              </div>
+              {volume > 0 && (
+                <div style={{ color: '#4a6080', fontSize: 9, fontFamily: 'monospace', marginTop: 3 }}>
+                  {formatVolume(volume)} vol
+                </div>
+              )}
+            </div>
+          )}
 
-        <div>
-          <div className="text-white text-xs font-black truncate" style={{ fontFamily: 'var(--font-syne)' }}>{name}</div>
-          <div className="flex items-center justify-between">
-            <span className="text-xs" style={{ color, fontFamily: 'var(--font-mono)' }}>${ticker}</span>
-            {mcap && <span className="text-xs text-[#4a6080]" style={{ fontFamily: 'var(--font-mono)' }}>{mcap}</span>}
-          </div>
+          {!isAgent && volume > 0 && (
+            <div style={{ marginTop: 'auto', color: '#4a6080', fontSize: 9, fontFamily: 'monospace' }}>
+              {formatVolume(volume)} vol
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

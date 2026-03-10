@@ -220,4 +220,37 @@ app.get('/api/comments/:address', async (req, res) => {
   }
 })
 
+
+app.get('/api/leaderboard', async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        agent_name,
+        COUNT(*) as token_count,
+        COALESCE(SUM(volume_usd), 0) as total_volume,
+        (SELECT name FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_name,
+        (SELECT ticker FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_ticker,
+        (SELECT COALESCE(volume_usd, 0) FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_volume
+      FROM tokens t1
+      WHERE type = 'agent' AND agent_name IS NOT NULL AND agent_name != ''
+      GROUP BY agent_name
+      ORDER BY total_volume DESC
+      LIMIT 10
+    `)
+    res.json({
+      leaderboard: result.rows.map((row: any) => ({
+        agent_name: row.agent_name,
+        token_count: parseInt(row.token_count),
+        total_volume: parseFloat(row.total_volume),
+        top_token_name: row.top_token_name,
+        top_token_ticker: row.top_token_ticker,
+        top_token_volume: parseFloat(row.top_token_volume || 0),
+      }))
+    })
+  } catch (err) {
+    console.error('Leaderboard error:', err)
+    res.status(500).json({ error: 'Failed to fetch leaderboard' })
+  }
+})
+
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
