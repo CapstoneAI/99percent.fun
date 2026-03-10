@@ -65,6 +65,17 @@ app.delete('/admin/tokens/:id', async (req, res) => {
   }
 })
 
+// Migrate agent columns
+app.get('/migrate-agent', async (req, res) => {
+  try {
+    await pool.query('ALTER TABLE tokens ADD COLUMN IF NOT EXISTS agent_name TEXT')
+    await pool.query('ALTER TABLE tokens ADD COLUMN IF NOT EXISTS proof_url TEXT')
+    res.json({ ok: true, message: 'Columns added' })
+  } catch (err) {
+    res.status(500).json({ error: String(err) })
+  }
+})
+
 // Health check
 app.get('/health', (_, res) => res.json({ status: 'ok' }))
 
