@@ -221,22 +221,10 @@ app.get('/api/comments/:address', async (req, res) => {
 })
 
 
-app.get('/api/leaderboard', async (req: Request, res: Response) => {
+app.get('/api/leaderboard', async (req: express.Request, res: express.Response) => {
   try {
-    const result = await pool.query(`
-      SELECT
-        agent_name,
-        COUNT(*) as token_count,
-        COALESCE(SUM(volume_usd), 0) as total_volume,
-        (SELECT name FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_name,
-        (SELECT ticker FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_ticker,
-        (SELECT COALESCE(volume_usd, 0) FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_volume
-      FROM tokens t1
-      WHERE type = 'agent' AND agent_name IS NOT NULL AND agent_name != ''
-      GROUP BY agent_name
-      ORDER BY total_volume DESC
-      LIMIT 10
-    `)
+    const sql = "SELECT agent_name, COUNT(*) as token_count, COALESCE(SUM(volume_usd), 0) as total_volume, (SELECT name FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_name, (SELECT ticker FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_ticker, (SELECT COALESCE(volume_usd, 0) FROM tokens t2 WHERE t2.agent_name = t1.agent_name ORDER BY volume_usd DESC NULLS LAST LIMIT 1) as top_token_volume FROM tokens t1 WHERE type = 'agent' AND agent_name IS NOT NULL AND agent_name != '' GROUP BY agent_name ORDER BY total_volume DESC LIMIT 10"
+    const result = await pool.query(sql)
     res.json({
       leaderboard: result.rows.map((row: any) => ({
         agent_name: row.agent_name,
