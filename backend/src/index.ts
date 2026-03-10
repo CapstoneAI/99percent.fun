@@ -103,7 +103,7 @@ app.get('/api/tokens', async (req, res) => {
 
 // POST /api/tokens — crea token
 app.post('/api/tokens', async (req, res) => {
-  const { name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address } = req.body
+    const { name, ticker, creator_wallet, type, description, image_url, twitter_url, telegram_url, website_url, contract_address, agent_name, proof_url } = req.body as { name: string, ticker: string, creator_wallet: string, type: string, description?: string, image_url?: string, twitter_url?: string, telegram_url?: string, website_url?: string, contract_address?: string, agent_name?: string, proof_url?: string }
   if (!name || !ticker || !creator_wallet || !type) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
