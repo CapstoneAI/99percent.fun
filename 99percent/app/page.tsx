@@ -53,9 +53,6 @@ export default function Home() {
           </Link>
         </div>
 
-        <StatsRow stats={stats} />
-        <BattleBar humanVolume={humanVol} agentVolume={agentVol} />
-
         {/* Top Trending */}
         <section>
           <div className="flex items-center justify-between mb-4">
@@ -88,6 +85,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <StatsRow stats={stats} />
+        <BattleBar humanVolume={humanVol} agentVolume={agentVol} />
 
         <DailyPack />
 
