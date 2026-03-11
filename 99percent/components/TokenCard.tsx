@@ -75,7 +75,7 @@ export default function TokenCard({ token, variant = 'feed' }: { token: Token, v
               {token.name}
             </div>
             <div style={{ color: accentColor, fontSize: 13, fontFamily: 'monospace', fontWeight: 600 }}>
-              \${token.ticker} · {isAgent ? 'Agent AI' : 'Human'}
+              ${token.ticker} · {isAgent ? 'Agent AI' : 'Human'}
             </div>
           </div>
         </div>
@@ -125,7 +125,7 @@ export default function TokenCard({ token, variant = 'feed' }: { token: Token, v
             whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
             marginTop: 4,
           }}>
-            {token.name} <span style={{ color: accentColor, fontSize: 13, fontWeight: 600 }}>\${token.ticker}</span>
+            {token.name} <span style={{ color: accentColor, fontSize: 13, fontWeight: 600 }}>${token.ticker}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3 }}>
             <span style={{ color: '#6a8aaa', fontSize: 10, fontFamily: 'monospace', textTransform: 'uppercase' }}>MC</span>

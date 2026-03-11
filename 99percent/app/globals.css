@@ -35,7 +35,7 @@ body {
   color: white;
   font-family: var(--font-jetbrains), monospace;
   overflow-x: hidden;
-  font-feature-settings: "zero" 0, "ss01" 1;
+  font-feature-settings: "zero" 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-variant-numeric: normal;
@@ -300,4 +300,9 @@ body {
 }
 .number-ticker {
   animation: count-up 0.4s ease-out forwards;
+}
+
+/* Fix zero barrato JetBrains Mono */
+@supports (font-feature-settings: "zero" 0) {
+  * { font-feature-settings: "zero" 0; }
 }
