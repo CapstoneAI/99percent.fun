@@ -25,9 +25,9 @@ export default function TokenCard({ token }: { token: Token }) {
   const href = token.id ? `/token/${token.contract_address || token.id}` : '#'
 
   function formatMcap(v: number) {
-    if (v >= 1000000) return `$${(v / 1000000).toFixed(1)}M`
-    if (v >= 1000) return `$${(v / 1000).toFixed(0)}K`
-    return `$${v}`
+    if (v >= 1000000) return '$' + (v / 1000000).toFixed(1) + 'M'
+    if (v >= 1000) return '$' + (v / 1000).toFixed(0) + 'K'
+    return '$' + v
   }
 
   return (
@@ -42,13 +42,12 @@ export default function TokenCard({ token }: { token: Token }) {
           borderRadius: 12,
           overflow: 'hidden',
           cursor: 'pointer',
-          border: `1.5px solid ${hovered ? accentColor : '#1a2a45'}`,
+          border: '1.5px solid ' + (hovered ? accentColor : '#1a2a45'),
           transition: 'border-color 0.2s, transform 0.2s',
           transform: hovered ? 'translateY(-2px)' : 'none',
           background: '#0a1628',
         }}
       >
-        {/* IMMAGINE FULL COVER */}
         {token.image_url ? (
           <img
             src={token.image_url}
@@ -65,7 +64,6 @@ export default function TokenCard({ token }: { token: Token }) {
           </div>
         )}
 
-        {/* BADGE HUMAN / AGENT in alto a destra */}
         <div style={{
           position: 'absolute', top: 8, right: 8,
           background: accentColor,
@@ -78,13 +76,11 @@ export default function TokenCard({ token }: { token: Token }) {
           {isAgent ? 'AGENT' : 'HUMAN'}
         </div>
 
-        {/* OVERLAY in basso: nome + ticker + MCap */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0,
           background: 'linear-gradient(to top, rgba(5,13,24,0.95) 0%, rgba(5,13,24,0.6) 70%, transparent 100%)',
           padding: '20px 10px 10px 10px',
         }}>
-          {/* Nome + Ticker */}
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 3 }}>
             <span style={{
               color: 'white', fontWeight: 700, fontSize: 13,
@@ -94,24 +90,16 @@ export default function TokenCard({ token }: { token: Token }) {
             }}>
               {token.name}
             </span>
-            <span style={{
-              color: accentColor, fontSize: 10,
-              fontFamily: 'monospace', fontWeight: 600,
-              whiteSpace: 'nowrap'
-            }}>
+            <span style={{ color: accentColor, fontSize: 10, fontFamily: 'monospace', fontWeight: 600 }}>
               ${token.ticker}
             </span>
           </div>
-
-          {/* MCap */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{ color: '#6a8aaa', fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: 0.5 }}>MCap</span>
+            <span style={{ color: '#6a8aaa', fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase' }}>MCap</span>
             <span style={{ color: '#c0d4e8', fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}>
               {token.market_cap && token.market_cap > 0 ? formatMcap(token.market_cap) : '$0'}
             </span>
           </div>
-
-          {/* Agent name se presente */}
           {isAgent && token.agent_name && (
             <div style={{ marginTop: 3, color: '#29d4f5', fontSize: 9, fontFamily: 'monospace' }}>
               🤖 {token.agent_name}
