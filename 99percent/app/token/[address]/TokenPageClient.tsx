@@ -88,12 +88,22 @@ export default function TokenPageClient({ token, comments: initialComments, addr
         {/* Header */}
         <div className="flex items-center gap-3 mb-6 flex-wrap">
           <Link href="/" className="text-[#4a6080] hover:text-white transition-colors text-sm">←</Link>
-          {token.image_url && <img src={token.image_url} alt={token.name} className="w-8 h-8 rounded-full object-cover" />}
+          {token.image_url && <img src={token.image_url} alt={token.name} style={{width:56,height:56,borderRadius:8,objectFit:"cover",border:"2px solid #1a2a45",flexShrink:0}} />}
           <span className="text-white font-black text-lg" style={{fontFamily:'var(--font-syne)'}}>{token.name}</span>
           <span className="px-2 py-0.5 text-xs font-bold" style={{color,background:`${color}20`,fontFamily:'var(--font-mono)'}}>${token.ticker}</span>
           <span className="px-2 py-0.5 text-xs border" style={{color,borderColor:color,fontFamily:'var(--font-mono)'}}>{emoji}</span>
           <span className="text-[#4a6080] text-xs" style={{fontFamily:'var(--font-mono)'}}>by {formatWallet(token.creator_wallet)}</span>
           <div className="ml-auto flex items-center gap-2">
+            {/* Copy address */}
+            {token.contract_address && (
+              <button
+                onClick={() => {navigator.clipboard.writeText(token.contract_address!); alert('Address copied!')}}
+                style={{display:'flex',alignItems:'center',gap:4,padding:'4px 10px',borderRadius:6,border:'1px solid #1a2a45',background:'#0a1628',color:'#6a8aaa',fontSize:11,fontFamily:'monospace',cursor:'pointer'}}
+              >
+                {token.contract_address.slice(0,6)}...{token.contract_address.slice(-4)}
+                <span style={{fontSize:12}}>📋</span>
+              </button>
+            )}
             {token.contract_address && (
               <>
                 <a href={`https://dexscreener.com/base/${token.contract_address}`} target="_blank" rel="noopener noreferrer"
