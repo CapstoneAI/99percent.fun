@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${syne.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${syne.variable} ${jetbrainsMono.variable}`} style={{fontFeatureSettings:"'calt' 0, 'liga' 0, 'zero' 0"}}>
       <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col" >
         <Providers>
           <Navbar />
