@@ -12,6 +12,15 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+*,
+*::before,
+*::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -82,10 +91,10 @@ body {
 .water-fill > * { position: relative; z-index: 1; }
 
 @keyframes wave {
-  0%, 100% { transform: translateX(0) scaleY(1); }
-  25% { transform: translateX(-5%) scaleY(1.02); }
-  50% { transform: translateX(5%) scaleY(0.98); }
-  75% { transform: translateX(-3%) scaleY(1.01); }
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5%); }
+  50% { transform: translateX(5%); }
+  75% { transform: translateX(-3%); }
 }
 
 /* ===== BATTLE BAR ===== */
