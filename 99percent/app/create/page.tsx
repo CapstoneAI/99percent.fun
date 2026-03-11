@@ -304,7 +304,7 @@ export default function CreatePage() {
         {/* RIGHT — Preview */}
         <div style={{ position: 'sticky', top: 100, alignSelf: 'start' }}>
           <label style={{ color: '#4a6080', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 12, textAlign: 'center' }}>LIVE PREVIEW</label>
-          <TokenCard token={{ id: 0, name: name || 'Token Name', ticker: ticker || 'TICKER', type: type as 'human' | 'agent', image_url: imageUrl || undefined, agent_name: agentName || undefined }} />
+          <TokenCard token={{ id: 0, name: name || 'Token Name', ticker: ticker || 'TICKER', type: type as 'human' | 'agent', image_url: imagePreview || imageUrl || undefined, agent_name: agentName || undefined }} />
 
           <div style={{ marginTop: 16, border: '1px solid #1a2a45', background: '#0d1f35', padding: '12px 14px' }}>
             <div style={{ color: '#4a6080', fontSize: 10, ...mono, marginBottom: 8 }}>Volume milestones</div>
