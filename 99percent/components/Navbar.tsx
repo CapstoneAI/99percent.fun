@@ -40,8 +40,8 @@ export default function Navbar() {
               className="hidden sm:block text-xs text-[#4a6080] hover:text-white transition-colors"
               style={{fontFamily:'var(--font-mono)'}}>Disclaimer</button>
             <Link href="/create"
-              className="px-3 py-1.5 text-xs font-bold uppercase tracking-widest hover:opacity-80 transition-opacity"
-              style={{background:'#29d4f5',color:'#050d18',fontFamily:'var(--font-syne)'}}>
+              className="font-bold uppercase tracking-widest hover:opacity-80 transition-opacity"
+              style={{background:'#29d4f5',color:'#050d18',fontFamily:'var(--font-syne)',fontSize:14,padding:'10px 20px',borderRadius:8,display:'inline-flex',alignItems:'center',height:40}}>
               Launch Token
             </Link>
             <ConnectButton />

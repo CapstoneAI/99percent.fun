@@ -35,6 +35,11 @@ body {
   color: white;
   font-family: var(--font-jetbrains), monospace;
   overflow-x: hidden;
+  font-feature-settings: "zero" 0, "ss01" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-variant-numeric: normal;
+  font-optical-sizing: auto;
 }
 
 /* ===== SCROLLBAR ===== */
