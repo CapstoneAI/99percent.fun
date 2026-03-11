@@ -35,7 +35,7 @@ export default function Home() {
   const topTokens = [...tokens].sort((a, b) => Number(b.volume_usd) - Number(a.volume_usd)).slice(0, 6)
 
   return (
-    <main className="min-h-screen bg-[#050d18]">
+    <main className="min-h-screen hero-bg grid-lines bg-[#050d18]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col gap-8">
 
         {/* Hero */}
@@ -63,7 +63,7 @@ export default function Home() {
               Top Trending
             </h2>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-2" style={{scrollbarWidth:'none'}}>
+          <div className="flex gap-3 overflow-x-auto pb-2 stagger" style={{scrollbarWidth:'none'}}>
             {topTokens.length > 0 ? topTokens.map((token, i) => (
               <div key={token.id} className="flex-shrink-0">
                 <TokenCard token={token} variant="trending" />
