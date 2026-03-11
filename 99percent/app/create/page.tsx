@@ -81,7 +81,11 @@ export default function CreatePage() {
         image: imageUrl || undefined,
         metadata: {
           description: description || undefined,
-          socialMediaUrls: [twitter, telegram, website].filter(Boolean),
+          socialMediaUrls: [
+            twitter ? { platform: 'x', url: twitter } : null,
+            telegram ? { platform: 'telegram', url: telegram } : null,
+            website ? { platform: 'website', url: website } : null,
+          ].filter(Boolean) as { platform: string; url: string }[],
         },
         context: {
           interface: '99percent.one',
