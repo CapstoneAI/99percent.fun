@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Syne, JetBrains_Mono } from 'next/font/google'
+import { Syne, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import Navbar from '@/components/Navbar'
@@ -12,7 +12,7 @@ const syne = Syne({
   display: 'swap',
 })
 
-const jetbrainsMono = JetBrains_Mono({
+const ibmPlexMono = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
   variable: '--font-mono',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${syne.variable} ${jetbrainsMono.variable}`} style={{fontFeatureSettings:"'calt' 0, 'liga' 0, 'zero' 0"}}>
+    <html lang="en" className={`${syne.variable} ${ibmPlexMono.variable}`} style={{fontFeatureSettings:"'calt' 0, 'liga' 0, 'zero' 0"}}>
       <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col" >
         <Providers>
           <Navbar />
