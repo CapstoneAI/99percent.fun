@@ -86,9 +86,9 @@ export default function TokenPageClient({ token, comments: initialComments, addr
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
 
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6 flex-wrap">
+        <div className="flex items-center gap-3 mb-6 flex-wrap" style={{alignItems:"center"}}>
           <Link href="/" className="text-[#4a6080] hover:text-white transition-colors text-sm">←</Link>
-          {token.image_url && <img src={token.image_url} alt={token.name} style={{width:56,height:56,borderRadius:8,objectFit:"cover",border:"2px solid #1a2a45",flexShrink:0}} />}
+          {token.image_url && <img src={token.image_url} alt={token.name} style={{width:56,height:56,borderRadius:8,objectFit:"cover",border:"2px solid #1a2a45",flexShrink:0,display:"block",alignSelf:"center"}} />}
           <span className="text-white font-black text-lg" style={{fontFamily:'var(--font-syne)'}}>{token.name}</span>
           <span className="px-2 py-0.5 text-xs font-bold" style={{color,background:`${color}20`,fontFamily:'var(--font-mono)'}}>${token.ticker}</span>
           <span className="px-2 py-0.5 text-xs border" style={{color,borderColor:color,fontFamily:'var(--font-mono)'}}>{emoji}</span>
