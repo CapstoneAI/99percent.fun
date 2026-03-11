@@ -241,4 +241,20 @@ app.get('/api/leaderboard', async (req: express.Request, res: express.Response) 
   }
 })
 
+
+// Update token image
+app.patch('/api/tokens/:id', async (req, res) => {
+  const { id } = req.params
+  const { image_url } = req.body
+  try {
+    const result = await pool.query(
+      'UPDATE tokens SET image_url = $1 WHERE id = $2 RETURNING *',
+      [image_url, id]
+    )
+    res.json(result.rows[0])
+  } catch (err) {
+    res.status(500).json({ error: 'Update failed' })
+  }
+})
+
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
