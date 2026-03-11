@@ -68,8 +68,8 @@ export default function CreatePage() {
 
       // 2. Init Clanker SDK
       const clanker = new Clanker({
-        publicClient,
-        wallet: walletClient,
+        publicClient: publicClient as any,
+        wallet: walletClient as any,
       })
 
       // 3. Deploy token on-chain
