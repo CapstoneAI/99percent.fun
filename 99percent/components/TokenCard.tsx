@@ -68,13 +68,13 @@ export default function TokenCard({ token, variant = 'feed' }: { token: Token, v
             background: 'rgba(5,13,24,0.75)',
             borderRadius: 6, padding: '3px 8px',
           }}>
-            <span style={{ color: 'white', fontFamily: 'monospace', fontWeight: 700, fontSize: 13 }}>{mcap}</span>
+            <span style={{ color: 'white', fontFamily: 'monospace', fontWeight: 700, fontSize: 16 }}>{mcap}</span>
           </div>
           <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10 }}>
-            <div style={{ color: 'white', fontWeight: 700, fontSize: 14, fontFamily: 'var(--font-syne), sans-serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ color: 'white', fontWeight: 700, fontSize: 17, fontFamily: 'var(--font-syne), sans-serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {token.name}
             </div>
-            <div style={{ color: accentColor, fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}>
+            <div style={{ color: accentColor, fontSize: 13, fontFamily: 'monospace', fontWeight: 600 }}>
               \${token.ticker} · {isAgent ? 'Agent AI' : 'Human'}
             </div>
           </div>
@@ -120,16 +120,16 @@ export default function TokenCard({ token, variant = 'feed' }: { token: Token, v
             {isAgent ? 'Agent AI' : 'Human'}
           </span>
           <div style={{
-            color: 'white', fontWeight: 700, fontSize: 14,
+            color: 'white', fontWeight: 700, fontSize: 16,
             fontFamily: 'var(--font-syne), sans-serif',
             whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
             marginTop: 4,
           }}>
-            {token.name} <span style={{ color: accentColor, fontSize: 11, fontWeight: 600 }}>\${token.ticker}</span>
+            {token.name} <span style={{ color: accentColor, fontSize: 13, fontWeight: 600 }}>\${token.ticker}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3 }}>
             <span style={{ color: '#6a8aaa', fontSize: 10, fontFamily: 'monospace', textTransform: 'uppercase' }}>MC</span>
-            <span style={{ color: '#c0d4e8', fontSize: 13, fontFamily: 'monospace', fontWeight: 700 }}>{mcap}</span>
+            <span style={{ color: '#c0d4e8', fontSize: 15, fontFamily: 'monospace', fontWeight: 700 }}>{mcap}</span>
           </div>
           {isAgent && token.agent_name && (
             <div style={{ marginTop: 2, color: '#29d4f5', fontSize: 10, fontFamily: 'monospace' }}>
