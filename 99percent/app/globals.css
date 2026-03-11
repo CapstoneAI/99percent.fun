@@ -19,6 +19,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-kerning: normal;
+  font-feature-settings: "zero" 0, "liga" 1, "calt" 1;
+}
+
+/* Fix zero slashed in JetBrains Mono */
+body, .font-mono, [style*="monospace"] {
+  font-feature-settings: "zero" 0;
+  font-variant-numeric: normal;
 }
 
 html { scroll-behavior: smooth; }
