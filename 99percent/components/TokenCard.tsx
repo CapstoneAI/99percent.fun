@@ -34,7 +34,7 @@ export default function TokenCard({ token }: { token: Token }) {
   }
 
   return (
-    <Link href={href} style={{ textDecoration: 'none' }}>
+    <Link href={token.id ? href : '#'} onClick={e => { if (!token.id) e.preventDefault() }} style={{ textDecoration: 'none' }}>
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
