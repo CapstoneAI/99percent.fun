@@ -31,113 +31,79 @@ export default function TokenCard({ token }: { token: Token }) {
   }
 
   return (
-    <Link href={href} onClick={(e) => { if (!token.id) e.preventDefault() }} style={{ textDecoration: 'none' }}>
+    <Link href={href} onClick={(e) => { if (!token.id) e.preventDefault() }} style={{ textDecoration: 'none', display: 'block' }}>
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
-          position: 'relative',
-          width: '100%',
-          aspectRatio: '1 / 1',
-          borderRadius: 12,
-          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 10,
+          padding: '8px 10px',
+          borderRadius: 10,
+          background: hovered ? '#0d1f38' : '#0a1628',
+          border: '1px solid ' + (hovered ? accentColor : '#1a2a45'),
+          transition: 'all 0.2s',
           cursor: 'pointer',
-          border: '1.5px solid ' + (hovered ? accentColor : '#1a2a45'),
-          transition: 'border-color 0.2s, transform 0.2s',
-          transform: hovered ? 'translateY(-2px)' : 'none',
-          background: '#0a1628',
+          width: '100%',
         }}
       >
-        {token.image_url ? (
-          <img
-            src={token.image_url}
-            alt={token.name}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          />
-        ) : (
-          <div style={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 48,
-            background: '#0a1628'
-          }}>
-            {isAgent ? '🤖' : '👤'}
-          </div>
-        )}
-
         <div style={{
-          position: 'absolute',
-          top: 8,
-          right: 8,
-          background: accentColor,
-          color: isAgent ? 'white' : '#050d18',
-          fontSize: 9,
-          fontWeight: 700,
-          fontFamily: 'monospace',
-          letterSpacing: 1,
-          padding: '2px 6px',
-          borderRadius: 4,
-          textTransform: 'uppercase',
+          width: 56,
+          height: 56,
+          borderRadius: 8,
+          overflow: 'hidden',
+          flexShrink: 0,
+          background: '#050d18',
+          border: '1px solid #1a2a45',
         }}>
-          {isAgent ? 'AGENT' : 'HUMAN'}
+          {token.image_url ? (
+            <img src={token.image_url} alt={token.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          ) : (
+            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
+              {isAgent ? '\u{1F916}' : '\u{1F464}'}
+            </div>
+          )}
         </div>
 
-        <div style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          background: 'linear-gradient(to top, rgba(5,13,24,0.95) 0%, rgba(5,13,24,0.6) 70%, transparent 100%)',
-          padding: '20px 10px 10px 10px',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 3 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ marginBottom: 3 }}>
             <span style={{
-              color: 'white',
-              fontWeight: 700,
-              fontSize: 13,
-              fontFamily: 'var(--font-syne), sans-serif',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              maxWidth: '65%'
+              background: accentColor,
+              color: isAgent ? 'white' : '#050d18',
+              fontSize: 8, fontWeight: 700,
+              fontFamily: 'monospace', letterSpacing: 1,
+              padding: '2px 6px', borderRadius: 3,
+              textTransform: 'uppercase',
             }}>
-              {token.name}
+              {isAgent ? 'Agent AI' : 'Human'}
             </span>
-            <span style={{
-              color: accentColor,
-              fontSize: 10,
-              fontFamily: 'monospace',
-              fontWeight: 600
-            }}>
-              ${token.ticker}
-            </span>
+          </div>
+
+          <div style={{
+            color: 'white', fontWeight: 700, fontSize: 13,
+            fontFamily: 'var(--font-syne), sans-serif',
+            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+            marginBottom: 2,
+          }}>
+            {token.name}
+          </div>
+
+          <div style={{ color: accentColor, fontSize: 10, fontFamily: 'monospace', fontWeight: 600, marginBottom: 4 }}>
+            \${token.ticker}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <span style={{
-              color: '#6a8aaa',
-              fontSize: 9,
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
-            }}>
-              MCap
-            </span>
-            <span style={{
-              color: '#c0d4e8',
-              fontSize: 11,
-              fontFamily: 'monospace',
-              fontWeight: 600
-            }}>
+            <span style={{ color: '#6a8aaa', fontSize: 9, fontFamily: 'monospace', textTransform: 'uppercase' }}>MC</span>
+            <span style={{ color: '#c0d4e8', fontSize: 11, fontFamily: 'monospace', fontWeight: 700 }}>
               {token.market_cap && token.market_cap > 0 ? formatMcap(token.market_cap) : '$0'}
             </span>
           </div>
 
           {isAgent && token.agent_name && (
             <div style={{ marginTop: 3, color: '#29d4f5', fontSize: 9, fontFamily: 'monospace' }}>
-              🤖 {token.agent_name}
+              {token.agent_name}
             </div>
           )}
         </div>
