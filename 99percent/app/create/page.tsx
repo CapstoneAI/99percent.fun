@@ -98,13 +98,13 @@ export default function CreatePage() {
             {
               recipient: address,
               admin: address,
-              bps: 4000,
+              bps: 5000,
               token: 'Paired',
             },
             {
               recipient: PLATFORM_WALLET as `0x${string}`,
               admin: PLATFORM_WALLET as `0x${string}`,
-              bps: 4000,
+              bps: 5000,
               token: 'Paired',
             },
           ]
