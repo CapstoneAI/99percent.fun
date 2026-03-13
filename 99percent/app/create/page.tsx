@@ -17,8 +17,8 @@ export default function CreatePage() {
   const { data: walletClient } = useWalletClient()
   const router = useRouter()
 
-  const [launchMode, setLaunchMode] = useState<'clanker' | 'doppler'>(' clanker')
-  const [type, setType] = useState<'human' | 'agent'>(' human')
+  const [launchMode, setLaunchMode] = useState<'clanker' | 'doppler'>('clanker')
+  const [type, setType] = useState<'human' | 'agent'>('human')
   const [name, setName] = useState('')
   const [ticker, setTicker] = useState('')
   const [description, setDescription] = useState('')
