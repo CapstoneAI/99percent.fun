@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Syne, Roboto_Mono } from 'next/font/google'
+import { Syne, Space_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import Navbar from '@/components/Navbar'
@@ -12,9 +12,9 @@ const syne = Syne({
   display: 'swap',
 })
 
-const robotoMono = Roboto_Mono({
+const spaceMono = Space_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '700'],
+  weight: ['400', '700'],
   variable: '--font-mono',
   display: 'swap',
 })
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${syne.variable} ${robotoMono.variable}`} style={{fontFeatureSettings:"'calt' 0, 'liga' 0, 'zero' 0"}}>
+    <html lang="en" className={`${syne.variable} ${spaceMono.variable}`} style={{fontFeatureSettings:"'calt' 0, 'liga' 0, 'zero' 0"}}>
       <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col" >
         <Providers>
           <Navbar />
