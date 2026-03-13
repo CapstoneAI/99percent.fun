@@ -291,12 +291,17 @@ export default function CreatePage() {
                     <span style={{ color: '#4a6080', fontSize: 9, ...mono }}>{l}</span>
                   </div>
                 ))}
-                <div style={{ marginTop: 8, background: '#1a2a45', borderRadius: 4, height: 4 }}>
-                  <div style={{ background: '#378add', height: 4, width: '0%', borderRadius: 4 }} />
+                <div style={{ marginTop: 12, background: '#1a2a45', borderRadius: 8, height: 18, overflow: 'hidden', position: 'relative' }}>
+                  <div style={{ background: 'linear-gradient(90deg, #7f77dd 0%, #29d4f5 100%)', height: '100%', width: '0%', borderRadius: 8, position: 'relative', transition: 'width 0.5s ease' }}>
+                    <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 20, background: 'rgba(255,255,255,0.3)', borderRadius: '0 8px 8px 0' }} />
+                  </div>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ color: 'white', fontSize: 10, ...mono, fontWeight: 700, opacity: 0.9 }}>0% to graduation</span>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-                  <span style={{ color: '#4a6080', fontSize: 9, ...mono }}>$0</span>
-                  <span style={{ color: '#378add', fontSize: 9, ...mono }}>$5M</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
+                  <span style={{ color: '#4a6080', fontSize: 9, ...mono }}>$500K launch</span>
+                  <span style={{ color: '#7f77dd', fontSize: 9, ...mono, fontWeight: 700 }}>🎓 $5M graduation</span>
                 </div>
               </>
             ) : (
