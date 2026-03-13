@@ -169,10 +169,10 @@ export default function CreatePage() {
           <label style={{ color: '#4a6080', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 10 }}>Launch mode</label>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 28 }}>
             {(['clanker', 'doppler'] as const).map(mode => (
-              <div key={mode} onClick={() => setLaunchMode(mode)} style={{ cursor: 'pointer', padding: '16px', background: launchMode === mode ? (mode === 'clanker' ? '#001a0f' : '#001225') : '#0d1f35', border: `1px solid ${launchMode === mode ? (mode === 'clanker' ? '#29d4f5' : '#378add') : '#1a2a45'}`, borderRadius: 10 }}>
+              <div key={mode} onClick={() => setLaunchMode(mode)} style={{ cursor: 'pointer', padding: '16px', background: launchMode === mode ? '#0f0a2e' : '#0d1f35', border: `1px solid ${launchMode === mode ? '#7f77dd' : '#1a2a45'}`, borderRadius: 10 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                   <span style={{ color: launchMode === mode ? 'white' : '#4a6080', fontWeight: 700, fontSize: 14, ...syne }}>{mode === 'clanker' ? '⚡ Instant' : '🚀 Bonding Curve'}</span>
-                  <span style={{ fontSize: 10, ...mono, color: mode === 'clanker' ? '#1d9e75' : '#378add', background: mode === 'clanker' ? '#001a0f' : '#001225', padding: '2px 8px', borderRadius: 4 }}>{mode === 'clanker' ? 'Clanker' : 'Doppler'}</span>
+                  <span style={{ fontSize: 10, ...mono, color: '#7f77dd', background: '#0f0a2e', padding: '2px 8px', borderRadius: 4 }}>{mode === 'clanker' ? 'Clanker' : 'Doppler'}</span>
                 </div>
                 <div style={{ color: '#4a6080', fontSize: 11, ...mono, lineHeight: 1.6 }}>
                   {mode === 'clanker' ? (
