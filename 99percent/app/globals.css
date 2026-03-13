@@ -306,3 +306,8 @@ body {
 @supports (font-feature-settings: "zero" 0) {
   * { font-feature-settings: "zero" 0; }
 }
+
+/* Fix Syne oldstyle numbers - forza numeri allineati */
+* {
+  font-variant-numeric: lining-nums tabular-nums;
+}
