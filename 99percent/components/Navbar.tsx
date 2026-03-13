@@ -13,8 +13,8 @@ export default function Navbar() {
     <>
       <nav className="border-b border-[#1a2a45] px-4 sm:px-6 py-3 sticky top-0 z-40" style={{background:'#050d18'}}>
         <div className="max-w-7xl mx-auto flex items-center gap-4">
-          <Link href="/" className="flex-shrink-0">
-            <span className="text-white font-black text-lg" style={{fontFamily:'var(--font-syne)'}}><span style={{display:'inline-flex', alignItems:'baseline', gap:2}}>
+          <Link href="/" className="flex-shrink-0" style={{display:"inline-flex",alignItems:"center"}}>
+            <span className="text-white font-black text-lg" style={{fontFamily:'var(--font-syne)'}}><span style={{display:'inline-flex', alignItems:'center', gap:2}}>
           <span style={{
             background: 'linear-gradient(135deg, #29d4f5, #0052ff)',
             WebkitBackgroundClip: 'text',
@@ -44,7 +44,19 @@ export default function Navbar() {
               style={{background:'#29d4f5',color:'#050d18',fontFamily:'var(--font-syne)',fontSize:14,padding:'10px 20px',borderRadius:8,display:'inline-flex',alignItems:'center',height:40}}>
               Launch Token
             </Link>
-            <ConnectButton />
+            <ConnectButton.Custom>
+              {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
+                const connected = mounted && account && chain
+                return (
+                  <button
+                    onClick={connected ? openAccountModal : openConnectModal}
+                    style={{background:'transparent',border:'2px solid #29d4f5',color:'#29d4f5',fontFamily:'var(--font-syne)',fontSize:14,padding:'8px 20px',borderRadius:8,display:'inline-flex',alignItems:'center',height:40,fontWeight:700,cursor:'pointer',letterSpacing:'0.05em'}}
+                  >
+                    {connected ? account.displayName : 'Connect Wallet'}
+                  </button>
+                )
+              }}
+            </ConnectButton.Custom>
           </div>
         </div>
       </nav>

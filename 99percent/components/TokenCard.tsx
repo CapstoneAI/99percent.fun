@@ -71,7 +71,7 @@ export default function TokenCard({ token, variant = 'feed' }: { token: Token, v
             <span style={{ color: 'white', fontFamily: 'monospace', fontWeight: 700, fontSize: 16 }}>{mcap}</span>
           </div>
           <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10 }}>
-            <div style={{ color: 'white', fontWeight: 700, fontSize: 17, fontFamily: 'var(--font-syne), sans-serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ color: 'white', fontWeight: 700, fontSize: 17, fontFamily: 'var(--font-syne), sans-serif', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontVariantNumeric: 'normal', lineHeight: 1.2 }}>
               {token.name}
             </div>
             <div style={{ color: accentColor, fontSize: 13, fontFamily: 'monospace', fontWeight: 600 }}>
