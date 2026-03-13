@@ -201,7 +201,7 @@ export default function CreatePage() {
           <label style={{ display: 'block', cursor: 'pointer', marginBottom: 28 }}>
             <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
             <div style={{ border: '1px dashed #1a2a45', borderRadius: 10, padding: '32px', textAlign: 'center', color: '#4a6080', fontSize: 13, ...mono, background: '#0d1f35' }}>
-              {imagePreview ? <img src={imagePreview} style={{ maxHeight: 120, borderRadius: 8 }} /> : 'img\nClick to upload'}
+              {imagePreview ? <img src={imagePreview} style={{ maxHeight: 120, borderRadius: 8 }} /> : <><div style={{fontSize:24,marginBottom:6}}>📁</div><div>Click to upload</div></>}
             </div>
           </label>
 
@@ -243,7 +243,7 @@ export default function CreatePage() {
           {/* DOPPLER INFO */}
           {launchMode === 'doppler' && (
             <div style={{ marginTop: 24, padding: 16, border: '1px solid #378add33', borderRadius: 10, background: '#001225' }}>
-              <label style={{ color: '#378add', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 12 }}>Bonding curve — parametri fissi</label>
+              <label style={{ color: '#378add', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 12 }}>Bonding curve — fixed parameters</label>
               {[
                 ['Total supply', '1,000,000,000'],
                 ['For sale', '900,000,000 (90%)'],
