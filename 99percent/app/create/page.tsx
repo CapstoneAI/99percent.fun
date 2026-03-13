@@ -200,7 +200,7 @@ export default function CreatePage() {
           <label style={{ color: '#4a6080', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 10 }}>Token image</label>
           <label style={{ display: 'block', cursor: 'pointer', marginBottom: 28 }}>
             <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
-            <div style={{ border: '1px dashed #1a2a45', borderRadius: 10, padding: '32px', textAlign: 'center', color: '#4a6080', fontSize: 13, ...mono, background: '#0d1f35' }}>
+            <div style={{ border: `1px dashed ${!imageUrl ? '#ff4444' : '#1a2a45'}`, borderRadius: 10, padding: '32px', textAlign: 'center', color: '#4a6080', fontSize: 13, ...mono, background: '#0d1f35' }}>
               {imagePreview ? <img src={imagePreview} style={{ maxHeight: 120, borderRadius: 8 }} /> : <><div style={{fontSize:24,marginBottom:6}}>📁</div><div>Click to upload</div></>}
             </div>
           </label>
@@ -279,7 +279,7 @@ export default function CreatePage() {
         {/* RIGHT — Preview */}
         <div style={{ position: 'sticky', top: 100, alignSelf: 'start' }}>
           <label style={{ color: '#4a6080', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 12, textAlign: 'center' }}>Live preview</label>
-          <TokenCard token={{ id: 0, name: name || 'Token Name', ticker: ticker || 'TICKER', type: type as 'human' | 'agent', image_url: imagePreview || imageUrl || undefined, agent_name: agentName || undefined }} />
+          <TokenCard token={{ id: 0, name: name || 'Token Name', ticker: ticker || 'TICKER', type: type as 'human' | 'agent', image_url: imagePreview || imageUrl || 'https://res.cloudinary.com/downrfwwt/image/upload/v1773432793/ChatGPT_Image_13_mar_2026_21_01_48_iwof3p.png', agent_name: agentName || undefined }} />
           <div style={{ marginTop: 16, border: '1px solid #1a2a45', background: '#0d1f35', padding: '12px 14px', borderRadius: 10 }}>
             {launchMode === 'doppler' ? (
               <>
