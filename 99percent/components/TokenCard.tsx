@@ -53,7 +53,7 @@ export default function TokenCard({ token, variant = 'feed' }: { token: Token, v
           }}
         >
           {token.image_url ? (
-            <img src={token.image_url} alt={token.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <img src={token.image_url || 'https://res.cloudinary.com/downrfwwt/image/upload/v1773432793/ChatGPT_Image_13_mar_2026_21_01_48_iwof3p.png'} alt={token.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 48 }}>
               {isAgent ? '🤖' : '👤'}
@@ -101,7 +101,7 @@ export default function TokenCard({ token, variant = 'feed' }: { token: Token, v
           background: '#0a1628',
         }}>
           {token.image_url ? (
-            <img src={token.image_url} alt={token.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <img src={token.image_url || 'https://res.cloudinary.com/downrfwwt/image/upload/v1773432793/ChatGPT_Image_13_mar_2026_21_01_48_iwof3p.png'} alt={token.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           ) : (
             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>
               {isAgent ? '🤖' : '👤'}
