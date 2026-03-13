@@ -176,9 +176,9 @@ export default function CreatePage() {
                 </div>
                 <div style={{ color: '#4a6080', fontSize: 11, ...mono, lineHeight: 1.6 }}>
                   {mode === 'clanker' ? (
-                    <>• Live su Uniswap subito<br/>• Supply 100 miliardi<br/>• Gas ~$0.10</>
+                    <>• Live on Uniswap instantly<br/>• 100B token supply<br/>• Gas ~$0.10</>
                   ) : (
-                    <>• 1 miliardo fisso<br/>• Price discovery + anti-bot<br/>• Gas ~$1-2 · Grad. a $5M</>
+                    <>• Fixed 1B supply<br/>• Price discovery + anti-bot<br/>• Gas ~$1-2 · Graduates at $5M</>
                   )}
                 </div>
               </div>
@@ -245,10 +245,10 @@ export default function CreatePage() {
             <div style={{ marginTop: 24, padding: 16, border: '1px solid #378add33', borderRadius: 10, background: '#001225' }}>
               <label style={{ color: '#378add', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 12 }}>Bonding curve — parametri fissi</label>
               {[
-                ['Supply totale', '1,000,000,000'],
-                ['In vendita', '900,000,000 (90%)'],
+                ['Total supply', '1,000,000,000'],
+                ['For sale', '900,000,000 (90%)'],
                 ['Graduation target', '$5,000,000 MC'],
-                ['Fee per trade', '0.3%'],
+                ['Trading fee', '0.3%'],
                 ['Anti-bot', 'Dutch auction'],
               ].map(([k, v]) => (
                 <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
@@ -259,9 +259,9 @@ export default function CreatePage() {
             </div>
           )}
 
-          {/* FEE + SUBMIT */}
+          {/* GAS INFO */}
           <div style={{ marginTop: 24, padding: '10px 14px', background: '#29d4f510', border: '1px solid #29d4f533', borderRadius: 8, color: '#29d4f5', fontSize: 11, ...mono, marginBottom: 12 }}>
-            Fee: Launch fee — {launchMode === 'clanker' ? '~$0.10 gas' : '~$1-2 gas'}
+            {launchMode === 'clanker' ? 'Gas fee: ~$0.10 on Base' : 'Gas fee: ~$1-2 on Base · 0.3% trading fee shared automatically'}
           </div>
 
           {error && <div style={{ color: '#ff4444', fontSize: 12, ...mono, marginBottom: 12 }}>{error}</div>}
@@ -281,14 +281,36 @@ export default function CreatePage() {
           <label style={{ color: '#4a6080', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 12, textAlign: 'center' }}>Live preview</label>
           <TokenCard token={{ id: 0, name: name || 'Token Name', ticker: ticker || 'TICKER', type: type as 'human' | 'agent', image_url: imagePreview || imageUrl || undefined, agent_name: agentName || undefined }} />
           <div style={{ marginTop: 16, border: '1px solid #1a2a45', background: '#0d1f35', padding: '12px 14px', borderRadius: 10 }}>
-            <div style={{ color: '#4a6080', fontSize: 10, ...mono, marginBottom: 8 }}>Volume milestones</div>
-            {[['🔥', '$1M+', 'ON FIRE'], ['🚀', '$100K', 'MOONING'], ['⭐', '$10K', 'HEATING UP'], ['💧', '$0', 'Just launched']].map(([e, v, l]) => (
-              <div key={v} style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 4 }}>
-                <span>{e}</span>
-                <span style={{ color: 'white', fontSize: 10, ...mono }}>{v}</span>
-                <span style={{ color: '#4a6080', fontSize: 9, ...mono }}>{l}</span>
-              </div>
-            ))}
+            {launchMode === 'doppler' ? (
+              <>
+                <div style={{ color: '#378add', fontSize: 10, ...mono, marginBottom: 10 }}>Bonding curve progress</div>
+                {[['$500K', 'Launch price'], ['$1.5M', 'Growing'], ['$5M', 'Graduates to Uniswap']].map(([v, l], i) => (
+                  <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: i === 0 ? '#378add' : '#1a2a45', flexShrink: 0 }} />
+                    <span style={{ color: '#378add', fontSize: 10, ...mono, fontWeight: 700 }}>{v}</span>
+                    <span style={{ color: '#4a6080', fontSize: 9, ...mono }}>{l}</span>
+                  </div>
+                ))}
+                <div style={{ marginTop: 8, background: '#1a2a45', borderRadius: 4, height: 4 }}>
+                  <div style={{ background: '#378add', height: 4, width: '0%', borderRadius: 4 }} />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
+                  <span style={{ color: '#4a6080', fontSize: 9, ...mono }}>$0</span>
+                  <span style={{ color: '#378add', fontSize: 9, ...mono }}>$5M</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={{ color: '#4a6080', fontSize: 10, ...mono, marginBottom: 8 }}>Volume milestones</div>
+                {[['🔥', '$1M+', 'ON FIRE'], ['🚀', '$100K', 'MOONING'], ['⭐', '$10K', 'HEATING UP'], ['💧', '$0', 'Just launched']].map(([e, v, l]) => (
+                  <div key={v} style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 4 }}>
+                    <span>{e}</span>
+                    <span style={{ color: 'white', fontSize: 10, ...mono }}>{v}</span>
+                    <span style={{ color: '#4a6080', fontSize: 9, ...mono }}>{l}</span>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
