@@ -62,6 +62,7 @@ export default function CreatePage() {
     if (!isConnected || !address) { setError('Connect your wallet first'); return }
     if (!walletClient) { setError('Wallet not ready'); return }
     if (!name || !ticker) { setError('Name and ticker are required'); return }
+    if (!imageUrl) { setError('Please upload a token image'); return }
 
     setLoading(true)
     setError('')
@@ -207,10 +208,12 @@ export default function CreatePage() {
 
           {/* FIELDS */}
           <label style={{ color: '#4a6080', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>Token name</label>
-          <input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. My Token" style={{ ...inputStyle, marginBottom: 16 }} />
+          <input value={name} onChange={e => setName(e.target.value.slice(0, 32))} placeholder="e.g. My Token" maxLength={32} style={{ ...inputStyle, marginBottom: 4 }} />
+          <div style={{ textAlign: 'right', color: '#4a6080', fontSize: 10, ...mono, marginBottom: 12 }}>{name.length}/32</div>
 
           <label style={{ color: '#4a6080', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>Ticker</label>
-          <input value={ticker} onChange={e => setTicker(e.target.value)} placeholder="$TICKER" style={{ ...inputStyle, marginBottom: 16 }} />
+          <input value={ticker} onChange={e => setTicker(e.target.value.slice(0, 8).toUpperCase())} placeholder="$TICKER" maxLength={8} style={{ ...inputStyle, marginBottom: 4 }} />
+          <div style={{ textAlign: 'right', color: '#4a6080', fontSize: 10, ...mono, marginBottom: 12 }}>{name.length}/32</div>
 
           <label style={{ color: '#4a6080', fontSize: 9, ...mono, letterSpacing: 2, textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>Description</label>
           <textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Tell the story of your token..." style={{ ...inputStyle, height: 90, resize: 'none', marginBottom: 8 }} />
