@@ -62,6 +62,11 @@ export default function Home() {
               Top Trending
             </h2>
           </div>
+
+          <div style={{ position: 'relative', height: 88, overflow: 'visible' }}>
+            <UFOTrendingBar tokens={topTokens} />
+          </div>
+
           <div className="flex gap-3 overflow-x-auto pb-2 stagger" style={{scrollbarWidth:'none'}}>
             {topTokens.length > 0 ? topTokens.map((token, i) => (
               <div key={token.id} className="flex-shrink-0" id={`trending-card-${i}`}>
@@ -74,11 +79,10 @@ export default function Home() {
                   <div className="ufo-skeleton-line" style={{width:'70%',height:10,borderRadius:4,marginBottom:6}} />
                   <div className="ufo-skeleton-line" style={{width:'45%',height:8,borderRadius:4}} />
                 </div>
-            ))}
               </div>
+            ))}
           </div>
-            </section>
-
+        </section>
             {/* TOP MARKET CAP */}
 
             <section style={{ marginBottom: 40, marginTop: 32 }}>
