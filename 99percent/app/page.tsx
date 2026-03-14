@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import AgentLeaderboard from '@/components/AgentLeaderboard'
-import BattleBar from '@/components/BattleBar'
-import StatsRow from '@/components/StatsRow'
 import DailyPack from '@/components/DailyPack'
 import TokenCard from '@/components/TokenCard'
 import Link from 'next/link'
@@ -77,9 +75,7 @@ export default function Home() {
           </div>
         </section>
 
-        <StatsRow stats={stats} />
-        <BattleBar humanVolume={humanVol} agentVolume={agentVol} />
-
+                
 
         {/* Battle indicator */}
         <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3 flex items-center justify-between">
