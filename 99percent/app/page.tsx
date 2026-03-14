@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import AgentLeaderboard from '@/components/AgentLeaderboard'
 import DailyPack from '@/components/DailyPack'
 import TokenCard from '@/components/TokenCard'
+import UFOTrendingBar from '@/components/UFOTrendingBar'
 import Link from 'next/link'
 import { getTokens, getStats } from '@/lib/api'
 
@@ -61,17 +62,25 @@ export default function Home() {
               Top Trending
             </h2>
           </div>
+          {/* UFO vola sopra le card */}
+          <div style={{ position: 'relative', height: 88, overflow: 'visible' }}>
+            <UFOTrendingBar tokens={topTokens} />
+          </div>
+
           <div className="flex gap-3 overflow-x-auto pb-2 stagger" style={{scrollbarWidth:'none'}}>
             {topTokens.length > 0 ? topTokens.map((token, i) => (
-              <div key={token.id} className="flex-shrink-0">
+              <div key={token.id} className="flex-shrink-0" id={`trending-card-${i}`}>
                 <TokenCard token={token} variant="trending" />
               </div>
             )) : [...Array(6)].map((_, i) => (
-</div>
+              <div key={i} style={{width:158,height:200,borderRadius:12,background:'rgba(255,255,255,0.03)',border:'1px solid rgba(41,212,245,0.08)',flexShrink:0}} />
+            ))}
+          </div>
+            </section>
 
             {/* UFO ABDUCTION SPACE */}
             <div style={{ height: 80, position: 'relative', marginBottom: 8 }}>
-              <p style={{ color: '#29d4f530', fontSize: 10, fontFamily: 'var(--font-mono)', textAlign: 'center', paddingTop: 30, letterSpacing: 3 }}>— UFO ABDUCTION ZONE —</p>
+              
             </div>
 
             {/* TOP MARKET CAP */}
