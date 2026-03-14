@@ -62,18 +62,16 @@ export default function Home() {
               Top Trending
             </h2>
           </div>
-
-          <div style={{ position: 'relative', height: 88, overflow: 'visible' }}>
-            <UFOTrendingBar tokens={topTokens} />
-          </div>
-
           <div className="flex gap-3 overflow-x-auto pb-2 stagger" style={{scrollbarWidth:'none'}}>
-            {topTokens.length > 0 ? topTokens.map((token, i) => (
+            {/* Card reali */}
+            {topTokens.map((token, i) => (
               <div key={token.id} className="flex-shrink-0" id={`trending-card-${i}`}>
                 <TokenCard token={token} variant="trending" />
               </div>
-            )) : [...Array(10)].map((_, i) => (
-              <div key={i} className="ufo-skeleton-card" style={{width:158,height:200,borderRadius:12,flexShrink:0,overflow:'hidden',position:'relative',background:'rgba(255,255,255,0.025)',border:'1px solid rgba(41,212,245,0.07)'}}>
+            ))}
+            {/* Skeleton posti vuoti fino a 10 */}
+            {[...Array(Math.max(0, 10 - topTokens.length))].map((_, i) => (
+              <div key={`sk-${i}`} className="ufo-skeleton-card" style={{width:158,height:200,borderRadius:12,flexShrink:0,overflow:'hidden',position:'relative',background:'rgba(255,255,255,0.025)',border:'1px solid rgba(41,212,245,0.07)'}}>
                 <div className="ufo-skeleton-shimmer" />
                 <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'8px 10px',borderTop:'1px solid rgba(41,212,245,0.07)'}}>
                   <div className="ufo-skeleton-line" style={{width:'70%',height:10,borderRadius:4,marginBottom:6}} />
