@@ -43,7 +43,7 @@ function Beam({ h }: { h: number }) {
   );
 }
 
-export default function UFOTrendingBar({ tokens }: { tokens: Token[] }) {
+export default function UFOTrendingBar({ tokens, cardIdPrefix = "trending-card" }: { tokens: Token[], cardIdPrefix?: string }) {
   const [left, setLeft]   = useState("110%");
   const [top, setTop]     = useState(-120);
   const [trans, setTrans] = useState("none");
@@ -63,7 +63,7 @@ export default function UFOTrendingBar({ tokens }: { tokens: Token[] }) {
     const zone = zoneRef.current;
     if (!zone) return 80 + idx * 170;
     const zr   = zone.getBoundingClientRect();
-    const card = document.getElementById(`trending-card-${idx}`);
+    const card = document.getElementById(`${cardIdPrefix}-${idx}`);
     if (!card) return 80 + idx * 170;
     const cr = card.getBoundingClientRect();
     return cr.left - zr.left + cr.width / 2;
@@ -122,7 +122,7 @@ export default function UFOTrendingBar({ tokens }: { tokens: Token[] }) {
 
   useEffect(() => {
     tokens.forEach((_, i) => {
-      const el = document.getElementById(`trending-card-${i}`);
+      const el = document.getElementById(`${cardIdPrefix}-${i}`);
       if (!el) return;
       el.style.opacity      = i === ghostIdx ? '0.2' : '';
       el.style.borderStyle  = i === ghostIdx ? 'dashed' : '';
@@ -131,7 +131,7 @@ export default function UFOTrendingBar({ tokens }: { tokens: Token[] }) {
 
   useEffect(() => {
     if (flashIdx < 0) return;
-    const el = document.getElementById(`trending-card-${flashIdx}`);
+    const el = document.getElementById(`${cardIdPrefix}-${flashIdx}`);
     if (!el) return;
     el.style.transition  = 'box-shadow .75s ease-out';
     el.style.boxShadow   = '0 0 0 0 rgba(41,212,245,0.6)';

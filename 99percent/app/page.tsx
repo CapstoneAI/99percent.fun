@@ -62,11 +62,6 @@ export default function Home() {
               Top Trending
             </h2>
           </div>
-          {/* UFO vola sopra le card */}
-          <div style={{ position: 'relative', height: 88, overflow: 'visible' }}>
-            <UFOTrendingBar tokens={topTokens} />
-          </div>
-
           <div className="flex gap-3 overflow-x-auto pb-2 stagger" style={{scrollbarWidth:'none'}}>
             {topTokens.length > 0 ? topTokens.map((token, i) => (
               <div key={token.id} className="flex-shrink-0" id={`trending-card-${i}`}>
@@ -78,17 +73,12 @@ export default function Home() {
           </div>
             </section>
 
-            {/* UFO ABDUCTION SPACE */}
-            <div style={{ height: 80, position: 'relative', marginBottom: 8 }}>
-              
-            </div>
-
             {/* TOP MARKET CAP */}
             <section style={{ marginBottom: 40 }}>
               <h2 className="text-white font-black uppercase tracking-widest" style={{ fontFamily: 'var(--font-syne)', fontSize: 13, letterSpacing: 3, marginBottom: 16 }}>Top Market Cap</h2>
               <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
                 {[...tokens].sort((a, b) => Number(b.market_cap_usd || 0) - Number(a.market_cap_usd || 0)).slice(0, 6).map((token, i) => (
-                  <div key={token.id} style={{ position: 'relative', flexShrink: 0 }}>
+                  <div key={token.id} id={`mcap-card-${i}`} style={{ position: 'relative', flexShrink: 0 }}>
                     <div style={{ position: 'absolute', top: 8, left: 8, zIndex: 10, background: '#0d1f35', border: '1px solid #29d4f5', borderRadius: 4, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <span style={{ color: '#29d4f5', fontSize: 9, fontFamily: 'var(--font-mono)', fontWeight: 700 }}>#{i+1}</span>
                     </div>
