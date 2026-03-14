@@ -341,3 +341,35 @@ body {
   animation: twinkle var(--duration, 3s) ease-in-out infinite, drift var(--drift, 8s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
 }
+
+/* ── UFO Skeleton Cards ───────────────────────────────────────────────── */
+@keyframes skeleton-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+.ufo-skeleton-card {
+  animation: skeleton-pulse 2s ease-in-out infinite;
+}
+
+.ufo-skeleton-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(41, 212, 245, 0.06) 50%,
+    transparent 60%
+  );
+  animation: skeleton-shimmer 2.2s ease-in-out infinite;
+}
+
+.ufo-skeleton-line {
+  background: rgba(41, 212, 245, 0.08);
+  animation: skeleton-pulse 2s ease-in-out infinite;
+}
