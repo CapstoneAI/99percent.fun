@@ -98,6 +98,16 @@ export default function Home() {
                     <TokenCard token={token} variant="trending" />
                   </div>
                 ))}
+            {/* Skeleton posti vuoti fino a 10 */}
+            {[...Array(Math.max(0, 10 - [...tokens].sort((a,b) => Number(b.market_cap_usd||0)-Number(a.market_cap_usd||0)).slice(0,10).length))].map((_, i) => (
+              <div key={`msk-${i}`} className="ufo-skeleton-card" style={{width:158,height:200,borderRadius:12,flexShrink:0,overflow:'hidden',position:'relative',background:'rgba(255,255,255,0.025)',border:'1px solid rgba(41,212,245,0.07)'}}>
+                <div className="ufo-skeleton-shimmer" />
+                <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'8px 10px',borderTop:'1px solid rgba(41,212,245,0.07)'}}>
+                  <div className="ufo-skeleton-line" style={{width:'70%',height:10,borderRadius:4,marginBottom:6}} />
+                  <div className="ufo-skeleton-line" style={{width:'45%',height:8,borderRadius:4}} />
+                </div>
+              </div>
+            ))}
                 {tokens.length === 0 && (
               <div style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:8,scrollbarWidth:'none'}}>
                 {[...Array(10)].map((_, j) => (
