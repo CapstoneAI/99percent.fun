@@ -109,6 +109,20 @@ export default function UFOTrendingBar({ tokens, cardIdPrefix = "trending-card" 
     busy.current = false;
   }, [getCenter]);
 
+  // Idle: UFO hovera sopra la prima card quando non sta animando
+  useEffect(() => {
+    if (tokens.length === 0) return;
+    const idleTimer = setTimeout(() => {
+      if (!busy.current) {
+        const cx = getCenter(0);
+        setTrans("left .8s cubic-bezier(.68,-.3,.27,1.4), top .6s cubic-bezier(.22,1,.36,1)");
+        setLeft(cx + "px");
+        setTop(4);
+      }
+    }, 600);
+    return () => clearTimeout(idleTimer);
+  }, [tokens, getCenter]);
+
   useEffect(() => {
     const prev = prevRef.current;
     if (prev.length > 0 && tokens.length > 0) {
