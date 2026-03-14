@@ -74,8 +74,9 @@ export default function Home() {
             </section>
 
             {/* TOP MARKET CAP */}
-            <section style={{ marginBottom: 40 }}>
-              <h2 className="text-white font-black uppercase tracking-widest" style={{ fontFamily: 'var(--font-syne)', fontSize: 13, letterSpacing: 3, marginBottom: 16 }}>Top Market Cap</h2>
+
+            <section style={{ marginBottom: 40, marginTop: 32 }}>
+              <h2 className="text-white font-black uppercase tracking-widest" style={{ fontFamily: 'var(--font-syne)', fontSize: 13, letterSpacing: 3, marginBottom: 16 }}>TOP MARKET CAP</h2>
               <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
                 {[...tokens].sort((a, b) => Number(b.market_cap_usd || 0) - Number(a.market_cap_usd || 0)).slice(0, 6).map((token, i) => (
                   <div key={token.id} id={`mcap-card-${i}`} style={{ position: 'relative', flexShrink: 0 }}>

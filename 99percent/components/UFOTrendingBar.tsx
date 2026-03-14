@@ -45,7 +45,7 @@ function Beam({ h }: { h: number }) {
 
 export default function UFOTrendingBar({ tokens, cardIdPrefix = "trending-card" }: { tokens: Token[], cardIdPrefix?: string }) {
   const [left, setLeft]   = useState("50%");
-  const [top, setTop]     = useState(4);
+  const [top, setTop]     = useState(-110);
   const [trans, setTrans] = useState("none");
   const [on, setOn]       = useState(false);
   const [beamH, setBeamH] = useState(0);
@@ -117,7 +117,7 @@ export default function UFOTrendingBar({ tokens, cardIdPrefix = "trending-card" 
         const cx = getCenter(0);
         setTrans("left .8s cubic-bezier(.68,-.3,.27,1.4), top .6s cubic-bezier(.22,1,.36,1)");
         setLeft(cx + "px");
-        setTop(4);
+        setTop(-2);
       }
     }, 600);
     return () => clearTimeout(idleTimer);
@@ -158,7 +158,7 @@ export default function UFOTrendingBar({ tokens, cardIdPrefix = "trending-card" 
   return (
     <>
       <style>{`@keyframes ufo-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}`}</style>
-      <div ref={zoneRef} style={{position:'absolute',inset:0,pointerEvents:'none',overflow:'visible',zIndex:20}}>
+      <div ref={zoneRef} style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',pointerEvents:'none',overflow:'visible',zIndex:20}}>
         <div style={{position:'absolute',left,top,transform:'translateX(-50%)',transition:trans,filter:'drop-shadow(0 0 18px rgba(41,212,245,.6))',pointerEvents:'none',zIndex:30}}>
           <div style={{animation:'ufo-bob 2.4s ease-in-out infinite'}}>
             <UFOSVG on={on}/>
