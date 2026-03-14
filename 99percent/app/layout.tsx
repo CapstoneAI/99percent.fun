@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 }
 
 import Starfield from '@/components/Starfield'
+import UFO from '@/components/UFO'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col" >
         <Providers>
           <Navbar />
-          <main className="flex-1"><Starfield />{children}</main>
+          <main className="flex-1"><Starfield /><UFO />{children}</main>
           <Footer />
         </Providers>
       </body>
