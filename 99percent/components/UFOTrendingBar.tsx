@@ -24,11 +24,11 @@ function UFOSVG({ on }: { on: boolean }) {
       {[{x:20,c:"#29d4f5"},{x:35,c:"#7f77dd"},{x:55,c:"#29d4f5"},{x:75,c:"#7f77dd"},{x:90,c:"#29d4f5"}].map((l,i)=>(
         <circle key={i} cx={l.x} cy={34} r="2" fill={l.c} opacity={on?1:0.25} style={{filter:on?`drop-shadow(0 0 3px ${l.c})`:'none',transition:'opacity .4s'}}/>
       ))}
-      <ellipse cx="55" cy="27" rx="20" ry="6" fill="#0d1b2a"/>
-      <ellipse cx="55" cy="19" rx="18" ry="14" fill="url(#udm)"/>
-      <ellipse cx="55" cy="27" rx="18" ry="5.5" fill="none" stroke="#1c3452" strokeWidth="0.8"/>
-      <ellipse cx="49" cy="14" rx="6" ry="4" fill="white" opacity="0.1"/>
-      <ellipse cx="47" cy="13" rx="3" ry="2" fill="white" opacity="0.15"/>
+      <ellipse cx="55" cy="26" rx="20" ry="5" fill="#0d1b2a"/>
+      <ellipse cx="55" cy="22" rx="18" ry="8" fill="url(#udm)"/>
+      <ellipse cx="55" cy="26" rx="18" ry="4.5" fill="none" stroke="#1c3452" strokeWidth="0.8"/>
+      <ellipse cx="49" cy="20" rx="6" ry="3" fill="white" opacity="0.1"/>
+      <ellipse cx="47" cy="19" rx="3" ry="2" fill="white" opacity="0.15"/>
     </svg>
   );
 }
@@ -109,19 +109,19 @@ export default function UFOTrendingBar({ tokens, cardIdPrefix = "trending-card" 
     busy.current = false;
   }, [getCenter]);
 
-  // Idle: UFO hovera sopra la prima card quando non sta animando
+  // Mount: vola subito sulla card 0 dopo render
   useEffect(() => {
     if (tokens.length === 0) return;
-    const idleTimer = setTimeout(() => {
+    const t = setTimeout(() => {
       if (!busy.current) {
         const cx = getCenter(0);
-        setTrans("left .8s cubic-bezier(.68,-.3,.27,1.4), top .6s cubic-bezier(.22,1,.36,1)");
+        setTrans("left .6s cubic-bezier(.22,1,.36,1), top .6s cubic-bezier(.22,1,.36,1)");
         setLeft(cx + "px");
         setTop(-2);
       }
-    }, 600);
-    return () => clearTimeout(idleTimer);
-  }, [tokens, getCenter]);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [tokens.length > 0, getCenter]);
 
   useEffect(() => {
     const prev = prevRef.current;
