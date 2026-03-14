@@ -24,13 +24,15 @@ export const metadata: Metadata = {
   description: 'The first Human vs AI Agent token launchpad on Base.',
 }
 
+import Starfield from '@/components/Starfield'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${syne.variable} ${spaceMono.variable}`} style={{fontFeatureSettings:"'calt' 0, 'liga' 0, 'zero' 0"}}>
       <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col" >
         <Providers>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1"><Starfield />{children}</main>
           <Footer />
         </Providers>
       </body>
