@@ -44,8 +44,8 @@ function Beam({ h }: { h: number }) {
 }
 
 export default function UFOTrendingBar({ tokens, cardIdPrefix = "trending-card" }: { tokens: Token[], cardIdPrefix?: string }) {
-  const [left, setLeft]   = useState("110%");
-  const [top, setTop]     = useState(-120);
+  const [left, setLeft]   = useState("50%");
+  const [top, setTop]     = useState(4);
   const [trans, setTrans] = useState("none");
   const [on, setOn]       = useState(false);
   const [beamH, setBeamH] = useState(0);
