@@ -74,6 +74,7 @@ export default function Home() {
                   <div className="ufo-skeleton-line" style={{width:'70%',height:10,borderRadius:4,marginBottom:6}} />
                   <div className="ufo-skeleton-line" style={{width:'45%',height:8,borderRadius:4}} />
                 </div>
+            ))}
               </div>
             ))}
           </div>
@@ -97,7 +98,17 @@ export default function Home() {
                   </div>
                 ))}
                 {tokens.length === 0 && (
-                  <p style={{ color: '#4a6080', fontSize: 12, fontFamily: 'var(--font-mono)' }}>No tokens yet.</p>
+              <div style={{display:'flex',gap:12,overflowX:'auto',paddingBottom:8,scrollbarWidth:'none'}}>
+                {[...Array(10)].map((_, j) => (
+                  <div key={j} className="ufo-skeleton-card" style={{width:158,height:200,borderRadius:12,flexShrink:0,overflow:'hidden',position:'relative',background:'rgba(255,255,255,0.025)',border:'1px solid rgba(41,212,245,0.07)'}}>
+                    <div className="ufo-skeleton-shimmer" />
+                    <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'8px 10px',borderTop:'1px solid rgba(41,212,245,0.07)'}}>
+                      <div className="ufo-skeleton-line" style={{width:'70%',height:10,borderRadius:4,marginBottom:6}} />
+                      <div className="ufo-skeleton-line" style={{width:'45%',height:8,borderRadius:4}} />
+                    </div>
+                  </div>
+                ))}
+              </div>
                 )}
               </div>
             </section>
