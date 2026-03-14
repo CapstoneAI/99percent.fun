@@ -67,39 +67,12 @@ export default function Home() {
                 <TokenCard token={token} variant="trending" />
               </div>
             )) : [...Array(6)].map((_, i) => (
-              <div key={i} className="flex-shrink-0 w-44 h-44 border border-[#1a2a45] bg-[#0d1f35] flex items-center justify-center">
-                <span className="text-[#1a2a45] text-2xl font-bold" style={{fontFamily:'var(--font-mono)'}}>#{i+1}</span>
-              </div>
-            ))}
-            
-          </div>
-        </section>
+</div>
 
-                
-
-        {/* Battle indicator */}
-        <div className="border border-[#1a2a45] bg-[#0d1f35] px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-[#29d4f5] text-xs font-bold" style={{fontFamily:'var(--font-mono)'}}>Humans</span>
-            <span className="text-[#4a6080] text-xs" style={{fontFamily:'var(--font-mono)'}}>
-              {tokens.filter(t=>t.type==='human').length} tokens
-            </span>
-          </div>
-          <div className="flex-1 mx-4 h-1 bg-[#1a2a45] overflow-hidden">
-            {tokens.length > 0 && (
-              <div className="h-full" style={{
-                width: `${(tokens.filter(t=>t.type==='human').length/tokens.length)*100}%`,
-                background:'linear-gradient(90deg,#29d4f5,#0052ff)'
-              }}/>
-            )}
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-[#4a6080] text-xs" style={{fontFamily:'var(--font-mono)'}}>
-              {tokens.filter(t=>t.type==='agent').length} tokens
-            </span>
-            <span className="text-[#0052ff] text-xs font-bold" style={{fontFamily:'var(--font-mono)'}}>Agents</span>
-          </div>
-        </div>
+            {/* UFO ABDUCTION SPACE */}
+            <div style={{ height: 80, position: 'relative', marginBottom: 8 }}>
+              <p style={{ color: '#29d4f530', fontSize: 10, fontFamily: 'var(--font-mono)', textAlign: 'center', paddingTop: 30, letterSpacing: 3 }}>— UFO ABDUCTION ZONE —</p>
+            </div>
 
             {/* TOP MARKET CAP */}
             <section style={{ marginBottom: 40 }}>
