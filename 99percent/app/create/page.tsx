@@ -63,6 +63,7 @@ export default function CreatePage() {
     if (!walletClient) { setError('Wallet not ready'); return }
     if (!name || !ticker) { setError('Name and ticker are required'); return }
     if (!imageUrl) { setError('Please upload a token image'); return }
+    if (!imageUrl) { setError('Please upload a token image'); return }
 
     setLoading(true)
     setError('')
