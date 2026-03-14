@@ -101,6 +101,24 @@ export default function Home() {
           </div>
         </div>
 
+            {/* TOP MARKET CAP */}
+            <section style={{ marginBottom: 40 }}>
+              <h2 className="text-white font-black uppercase tracking-widest" style={{ fontFamily: 'var(--font-syne)', fontSize: 13, letterSpacing: 3, marginBottom: 16 }}>Top Market Cap</h2>
+              <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
+                {[...tokens].sort((a, b) => Number(b.market_cap_usd || 0) - Number(a.market_cap_usd || 0)).slice(0, 6).map((token, i) => (
+                  <div key={token.id} style={{ position: 'relative', flexShrink: 0 }}>
+                    <div style={{ position: 'absolute', top: 8, left: 8, zIndex: 10, background: '#0d1f35', border: '1px solid #29d4f5', borderRadius: 4, width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <span style={{ color: '#29d4f5', fontSize: 9, fontFamily: 'var(--font-mono)', fontWeight: 700 }}>#{i+1}</span>
+                    </div>
+                    <TokenCard token={token} variant="trending" />
+                  </div>
+                ))}
+                {tokens.length === 0 && (
+                  <p style={{ color: '#4a6080', fontSize: 12, fontFamily: 'var(--font-mono)' }}>No tokens yet.</p>
+                )}
+              </div>
+            </section>
+
         {/* Feed */}
         <section>
           <div className="flex items-center gap-2 mb-4 border-b border-[#1a2a45] pb-3">
