@@ -3,6 +3,7 @@ import { Syne, Space_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import Navbar from '@/components/Navbar'
+import Sidebar from '@/components/Sidebar'
 import { Footer } from '@/components/Footer'
 
 const syne = Syne({
@@ -32,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-[#050d18] text-white min-h-screen font-mono antialiased flex flex-col" >
         <Providers>
           <Navbar />
-          <main className="flex-1"><Starfield />{children}</main>
+          <div style={{display:"flex",flex:1}}><Sidebar /><main style={{flex:1,minWidth:0}}><Starfield />{children}</main></div>
           <Footer />
         </Providers>
       </body>
