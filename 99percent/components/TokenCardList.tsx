@@ -7,16 +7,16 @@ function timeAgo(d: string) {
   if (!d) return ''
   const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000)
   if (m < 1) return 'now'
-  if (m < 60) return `${m}m`
+  if (m < 60) return `${m}m ago`
   const h = Math.floor(m / 60)
-  if (h < 24) return `${h}h`
-  return `${Math.floor(h/24)}d`
+  if (h < 24) return `${h}h ago`
+  return `${Math.floor(h/24)}d ago`
 }
 
 function fmtMC(v: number) {
   if (v >= 1_000_000) return `$${(v/1_000_000).toFixed(1)}M`
   if (v >= 1_000) return `$${(v/1_000).toFixed(1)}K`
-  return `$${v}`
+  return `$${v.toFixed(0)}`
 }
 
 export default function TokenCardList({ token }: { token: any }) {
@@ -30,56 +30,68 @@ export default function TokenCardList({ token }: { token: any }) {
   return (
     <Link href={href} style={{ textDecoration: 'none', display: 'block' }}>
       <div
-        style={{ display: 'flex', gap: 8, padding: '8px 10px', borderBottom: '1px solid rgba(41,212,245,0.07)', background: 'transparent', transition: 'background 0.15s', cursor: 'pointer', alignItems: 'center' }}
-        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(41,212,245,0.04)')}
-        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+        style={{
+          display: 'flex', gap: 10, padding: '10px',
+          background: 'rgba(255,255,255,0.02)',
+          border: '1px solid rgba(41,212,245,0.08)',
+          borderRadius: 10, cursor: 'pointer',
+          transition: 'border-color 0.2s, background 0.2s',
+          height: '100%',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.background = 'rgba(41,212,245,0.05)'
+          e.currentTarget.style.borderColor = 'rgba(41,212,245,0.25)'
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.02)'
+          e.currentTarget.style.borderColor = 'rgba(41,212,245,0.08)'
+        }}
       >
         {/* Image */}
         <img
           src={token.image_url || token.imageUrl || ALIEN}
           alt={token.name}
-          style={{ width: 40, height: 40, borderRadius: 6, objectFit: 'cover', flexShrink: 0, border: '1px solid rgba(41,212,245,0.15)' }}
+          style={{ width: 80, height: 80, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }}
         />
 
         {/* Info */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {/* Row 1: name + ticker + age + badge */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 3 }}>
-            <span style={{ fontFamily: "'Syne',sans-serif", fontSize: 13, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 120 }}>
-              {token.name}
-            </span>
-            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: accent, fontWeight: 600, flexShrink: 0 }}>
-              ${token.ticker || token.symbol}
-            </span>
-            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: 'rgba(255,255,255,0.3)', flexShrink: 0 }}>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
+          {/* Name */}
+          <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 13, fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {token.name}
+          </div>
+          {/* Ticker */}
+          <div style={{ fontFamily: "'Space Mono',monospace", fontSize: 10, color: accent, fontWeight: 600 }}>
+            ${token.ticker || token.symbol}
+          </div>
+          {/* Age + badge */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>
               {timeAgo(token.created_at)}
             </span>
-            <span style={{ marginLeft: 'auto', fontFamily: "'Space Mono',monospace", fontSize: 7, padding: '1px 5px', borderRadius: 3, fontWeight: 700, background: accent, color: '#fff', flexShrink: 0, whiteSpace: 'nowrap' }}>
+            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 7, padding: '1px 5px', borderRadius: 3, fontWeight: 700, background: accent, color: '#fff', flexShrink: 0 }}>
               {isAgent ? 'Agent' : 'Human'}
             </span>
           </div>
-
-          {/* Row 2: MC + bar + change */}
+          {/* MC + change */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: 'rgba(255,255,255,0.35)', flexShrink: 0 }}>MC</span>
-            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 11, fontWeight: 700, color: '#29d4f5', fontVariantNumeric: 'lining-nums', flexShrink: 0 }}>
+            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>MC</span>
+            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 11, fontWeight: 700, color: '#29d4f5', fontVariantNumeric: 'lining-nums' }}>
               {fmtMC(mc)}
             </span>
-            {token.launch_type === 'doppler' && (
-              <div style={{ flex: 1, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.08)', overflow: 'hidden', maxWidth: 60 }}>
-                <div style={{ height: '100%', width: `${progress}%`, borderRadius: 2, background: 'linear-gradient(90deg,#29d4f5,#7f77dd)' }} />
-              </div>
-            )}
             {change !== 0 && (
-              <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 10, fontWeight: 700, color: change > 0 ? '#29d4f5' : '#ff4d6d', fontVariantNumeric: 'lining-nums', flexShrink: 0 }}>
-                {change > 0 ? '↑' : '↓'}{Math.abs(change).toFixed(1)}%
+              <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, fontWeight: 700, color: change > 0 ? '#29d4f5' : '#ff4d6d', fontVariantNumeric: 'lining-nums' }}>
+                {change > 0 ? '↑' : '↓'}{Math.abs(change).toFixed(2)}%
               </span>
             )}
           </div>
-
-          {/* Row 3: description */}
+          {/* Progress bar */}
+          <div style={{ height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+            <div style={{ height: '100%', width: `${progress}%`, borderRadius: 2, background: 'linear-gradient(90deg,#29d4f5,#7f77dd)', transition: 'width 0.5s' }} />
+          </div>
+          {/* Description */}
           {token.description && (
-            <p style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: 'rgba(255,255,255,0.28)', margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <p style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: 'rgba(255,255,255,0.28)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {token.description}
             </p>
           )}
