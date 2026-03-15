@@ -85,9 +85,16 @@ export default function TokenCardList({ token }: { token: any }) {
               </span>
             )}
           </div>
-          {/* Progress bar */}
-          <div style={{ height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
-            <div style={{ height: '100%', width: `${progress}%`, borderRadius: 2, background: 'linear-gradient(90deg,#29d4f5,#7f77dd)', transition: 'width 0.5s' }} />
+          {/* Progress bar stile pump.fun */}
+          <div style={{ height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.06)', overflow: 'hidden', marginTop: 1 }}>
+            <div style={{
+              height: '100%',
+              width: `${progress || (mc > 0 ? Math.min((mc / 69000) * 100, 100) : 0)}%`,
+              borderRadius: 2,
+              background: 'linear-gradient(90deg, #00c48c, #29d4f5)',
+              transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)',
+              boxShadow: '0 0 6px rgba(0,196,140,0.5)',
+            }} />
           </div>
           {/* Description */}
           {token.description && (
