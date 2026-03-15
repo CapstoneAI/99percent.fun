@@ -19,7 +19,7 @@ export default function NewPage() {
   }, [])
 
   return (
-    <div style={{ padding: '28px 24px', maxWidth: 720 }}>
+    <div style={{ padding: '28px 24px', maxWidth: 900 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
         <h1 style={{ fontFamily: "'Syne',sans-serif", fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
           New

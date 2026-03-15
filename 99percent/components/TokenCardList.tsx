@@ -31,7 +31,7 @@ export default function TokenCardList({ token }: { token: any }) {
   return (
     <Link href={href} style={{ textDecoration: 'none', display: 'block' }}>
       <div
-        style={{ display: 'flex', gap: 14, padding: '14px 16px', borderBottom: '1px solid rgba(41,212,245,0.07)', background: 'transparent', transition: 'background 0.2s', cursor: 'pointer' }}
+        style={{ display: 'flex', gap: 12, padding: '10px 14px', borderBottom: '1px solid rgba(41,212,245,0.07)', background: 'transparent', transition: 'background 0.2s', cursor: 'pointer' }}
         onMouseEnter={e => (e.currentTarget.style.background = 'rgba(41,212,245,0.04)')}
         onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
       >
@@ -39,28 +39,24 @@ export default function TokenCardList({ token }: { token: any }) {
         <img
           src={token.image_url || token.imageUrl || ALIEN}
           alt={token.name}
-          style={{ width: 72, height: 72, borderRadius: 10, objectFit: 'cover', flexShrink: 0, border: '1px solid rgba(41,212,245,0.15)' }}
+          style={{ width: 56, height: 56, borderRadius: 8, objectFit: 'cover', flexShrink: 0, border: '1px solid rgba(41,212,245,0.15)' }}
         />
 
         {/* Right side */}
-        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
 
-          {/* Row 1: name + age */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-            <span style={{ fontFamily: "'Syne',sans-serif", fontSize: 15, fontWeight: 800, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {/* Row 1: name + ticker + age + badge — tutto su una riga */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontFamily: "'Syne',sans-serif", fontSize: 14, fontWeight: 800, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {token.name}
             </span>
-            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 10, color: 'rgba(255,255,255,0.3)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-              {timeAgo(token.created_at)}
-            </span>
-          </div>
-
-          {/* Row 2: ticker + type badge */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 11, color: accent, fontWeight: 600 }}>
+            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 10, color: accent, fontWeight: 600, flexShrink: 0 }}>
               ${token.ticker || token.symbol}
             </span>
-            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 8, padding: '2px 6px', borderRadius: 4, fontWeight: 700, letterSpacing: '0.05em', background: accent, color: '#fff' }}>
+            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: 'rgba(255,255,255,0.3)', flexShrink: 0 }}>
+              {timeAgo(token.created_at)}
+            </span>
+            <span style={{ fontFamily: "'Space Mono',monospace", fontSize: 8, padding: '1px 5px', borderRadius: 3, fontWeight: 700, letterSpacing: '0.05em', background: accent, color: '#fff', flexShrink: 0, marginLeft: 'auto' }}>
               {isAgent ? 'Agent' : 'Human'}
             </span>
           </div>
