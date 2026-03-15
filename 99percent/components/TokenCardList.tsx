@@ -86,16 +86,24 @@ export default function TokenCardList({ token }: { token: any }) {
             )}
           </div>
           {/* Progress bar stile pump.fun */}
-          <div style={{ height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.06)', overflow: 'hidden', marginTop: 1 }}>
-            <div style={{
-              height: '100%',
-              width: `${progress || (mc > 0 ? Math.min((mc / 69000) * 100, 100) : 0)}%`,
-              borderRadius: 2,
-              background: 'linear-gradient(90deg, #00c48c, #29d4f5)',
-              transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1)',
-              boxShadow: '0 0 6px rgba(0,196,140,0.5)',
-            }} />
-          </div>
+          {(() => {
+            const pct = progress || (mc > 0 ? Math.min((mc / 69000) * 100, 100) : 2)
+            const isNearFull = pct >= 80
+            return (
+              <div style={{ height: 6, borderRadius: 3, background: 'rgba(255,255,255,0.06)', overflow: 'hidden', marginTop: 2 }}>
+                <div style={{
+                  height: '100%',
+                  width: `${pct}%`,
+                  borderRadius: 3,
+                  background: isNearFull
+                    ? 'linear-gradient(90deg, #29d4f5, #0052ff)'
+                    : 'linear-gradient(90deg, #00c48c, #29d4f5)',
+                  transition: 'width 1.2s cubic-bezier(0.22,1,0.36,1), background 0.8s ease',
+                  boxShadow: isNearFull ? '0 0 8px rgba(41,212,245,0.6)' : '0 0 6px rgba(0,196,140,0.4)',
+                }} />
+              </div>
+            )
+          })()}
           {/* Description */}
           {token.description && (
             <p style={{ fontFamily: "'Space Mono',monospace", fontSize: 9, color: 'rgba(255,255,255,0.28)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
