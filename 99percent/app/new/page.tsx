@@ -32,7 +32,7 @@ export default function NewPage() {
         </span>
       </div>
 
-      <div style={{ border: '1px solid rgba(41,212,245,0.1)', borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 0, border: "1px solid rgba(41,212,245,0.1)", borderRadius: 12, overflow: "hidden" }}>
         {!loading && tokens.length > 0 ? tokens.map(token => (
           <TokenCardList key={token.id} token={token} />
         )) : (
