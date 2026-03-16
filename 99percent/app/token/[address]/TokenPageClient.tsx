@@ -131,7 +131,7 @@ export default function TokenPageClient({ token, comments: initialComments, addr
             <div className="border border-[#1a2a45] overflow-hidden" style={{height:'400px'}}>
               {token.contract_address ? (
                 <iframe
-                  src={`https://dexscreener.com/base/${token.contract_address}?embed=1&theme=dark&trades=0&info=0`}
+                  src={`https://www.geckoterminal.com/base/pools/${token.contract_address}?embed=1&info=0&swaps=0&grayscale=0&light_chart=0`}
                   className="w-full h-full" style={{border:'none'}} />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-[#4a6080] text-xs" style={{fontFamily:'var(--font-mono)'}}>
