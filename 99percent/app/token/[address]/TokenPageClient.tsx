@@ -1,4 +1,5 @@
 'use client'
+import TradeWidget from '@/components/TradeWidget'
 
 import { useState } from 'react'
 import Link from 'next/link'
@@ -22,6 +23,7 @@ interface Token {
   volume_usd: number
   market_cap: number
   created_at: string
+  launch_type?: string
 }
 
 interface Comment {
@@ -29,6 +31,7 @@ interface Comment {
   wallet: string
   content: string
   created_at: string
+  launch_type?: string
 }
 
 export default function TokenPageClient({ token, comments: initialComments, address }: {
@@ -269,7 +272,27 @@ export default function TokenPageClient({ token, comments: initialComments, addr
               )}
             </div>
 
-            {/* Token info */}
+            {/* Chart */}
+          {token.contract_address && (
+            <div style={{border:'1px solid rgba(41,212,245,0.1)',borderRadius:12,overflow:'hidden',marginBottom:12}}>
+              <iframe
+                src={`https://www.geckoterminal.com/base/pools/${token.contract_address}?embed=1&info=0&swaps=0`}
+                style={{width:'100%',height:280,border:'none'}}
+                title="Chart"
+              />
+            </div>
+          )}
+          {/* Trade Widget */}
+          {token.contract_address && (
+            <TradeWidget
+              contractAddress={token.contract_address}
+              launchType={(token as any).launch_type}
+              tokenSymbol={token.ticker}
+              tokenName={token.name}
+            />
+          )}
+
+          {/* Token info */}
             <div className="border border-[#1a2a45] bg-[#0d1f35] p-4">
               <div className="text-xs font-bold text-white mb-3 uppercase tracking-widest" style={{fontFamily:'var(--font-syne)'}}>Token Info</div>
               <div className="flex flex-col gap-2">
