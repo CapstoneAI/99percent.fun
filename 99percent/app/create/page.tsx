@@ -115,7 +115,7 @@ export default function CreatePage() {
         const WETH = '0x4200000000000000000000000000000000000006'
         const params = sdk
           .buildMulticurveAuction()
-          .tokenConfig({ name, symbol: ticker.toUpperCase(), tokenURI: imageUrl || 'https://99percent.one/placeholder.png' })
+          .tokenConfig({ name, symbol: ticker.toUpperCase(), tokenURI: `https://99percentfun-production.up.railway.app/api/token-metadata/${ticker.toUpperCase()}` })
           .saleConfig({ initialSupply: parseEther('1000000000'), numTokensToSell: parseEther('900000000'), numeraire: WETH })
           .withCurves({
             numerairePrice: 2000,

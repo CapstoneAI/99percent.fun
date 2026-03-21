@@ -271,4 +271,31 @@ app.post('/api/upload-image', async (req: any, res: any) => {
   }
 });
 
+
+// Token metadata endpoint for Doppler/Clanker
+app.get('/api/token-metadata/:ticker', async (req: any, res: any) => {
+  try {
+    const { ticker } = req.params;
+    const result = await pool.query(
+      'SELECT name, ticker, image_url, description FROM tokens WHERE LOWER(ticker) = LOWER($1) LIMIT 1',
+      [ticker]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Token not found' });
+    }
+    const token = result.rows[0];
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    return res.json({
+      name: token.name,
+      symbol: token.ticker.toUpperCase(),
+      description: token.description || '',
+      image: token.image_url || 'https://99percent.one/placeholder.png',
+      external_url: `https://99percent.one/token/${token.ticker}`,
+    });
+  } catch (err: any) {
+    console.error('Metadata error:', err);
+    return res.status(500).json({ error: 'Failed to fetch metadata' });
+  }
+});
+
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
