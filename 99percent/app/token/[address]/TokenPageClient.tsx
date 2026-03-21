@@ -239,49 +239,7 @@ export default function TokenPageClient({ token, comments: initialComments, addr
           </div>
 
           {/* Right */}
-          <div className="flex flex-col gap-4">
-            {/* Trade box */}
-            <div className="border border-[#1a2a45] bg-[#0d1f35] p-4">
-              <div className="text-xs font-bold text-white mb-3 uppercase tracking-widest" style={{fontFamily:'var(--font-syne)'}}>
-                Trade ${token.ticker}
-              </div>
-              <div className="grid grid-cols-2 gap-2 mb-3">
-                {['BUY','SELL'].map(a => (
-                  <button key={a} className="py-2 text-xs font-bold uppercase tracking-widest"
-                    style={{
-                      background: a==='BUY' ? color : 'transparent',
-                      color: a==='BUY' ? '#050d18' : '#4a6080',
-                      border: `1px solid ${a==='BUY' ? color : '#1a2a45'}`,
-                      fontFamily:'var(--font-syne)'
-                    }}>
-                    {a}
-                  </button>
-                ))}
-              </div>
-              {token.contract_address ? (
-                <a href={`https://app.uniswap.org/swap?outputCurrency=${token.contract_address}&chain=base`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="block w-full py-3 text-xs font-bold text-center uppercase tracking-widest hover:opacity-80 transition-opacity"
-                  style={{background:color,color:'#050d18',fontFamily:'var(--font-syne)'}}>
-                  Trade on Uniswap
-                </a>
-              ) : (
-                <div className="text-xs text-[#4a6080] text-center py-2" style={{fontFamily:'var(--font-mono)'}}>
-                  Token not yet on-chain
-                </div>
-              )}
-            </div>
 
-            {/* Chart */}
-          {token.contract_address && (
-            <div style={{border:'1px solid rgba(41,212,245,0.1)',borderRadius:12,overflow:'hidden',marginBottom:12}}>
-              <iframe
-                src={`https://www.geckoterminal.com/base/pools/${token.contract_address}?embed=1&info=0&swaps=0`}
-                style={{width:'100%',height:280,border:'none'}}
-                title="Chart"
-              />
-            </div>
-          )}
           {/* Trade Widget */}
           {token.contract_address && (
             <TradeWidget
@@ -291,6 +249,7 @@ export default function TokenPageClient({ token, comments: initialComments, addr
               tokenName={token.name}
             />
           )}
+
 
           {/* Token info */}
             <div className="border border-[#1a2a45] bg-[#0d1f35] p-4">
@@ -332,7 +291,6 @@ export default function TokenPageClient({ token, comments: initialComments, addr
             </div>
           </div>
         </div>
-      </div>
     </main>
   )
 }
