@@ -263,11 +263,8 @@ app.post('/api/upload-image', async (req: any, res: any) => {
   try {
     const { image } = req.body;
     if (!image) return res.status(400).json({ error: 'No image provided' });
-    const result = await cloudinary.uploader.upload(image, {
-      folder: '99percent',
-      resource_type: 'image',
-    });
-    return res.json({ url: result.secure_url });
+    const url = await uploadImage(image);
+    return res.json({ url });
   } catch (err: any) {
     console.error('Cloudinary upload error:', err);
     return res.status(500).json({ error: 'Upload failed', details: err.message });
