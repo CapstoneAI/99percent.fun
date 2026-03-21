@@ -298,4 +298,60 @@ app.get('/api/token-metadata/:ticker', async (req: any, res: any) => {
   }
 });
 
+
+// Sync market cap and volume from DexScreener
+app.post('/api/sync-prices', async (req: any, res: any) => {
+  try {
+    const tokens = await pool.query(
+      'SELECT id, contract_address, ticker FROM tokens WHERE contract_address IS NOT NULL'
+    );
+    let updated = 0;
+    for (const token of tokens.rows) {
+      try {
+        const url = `https://api.dexscreener.com/latest/dex/tokens/${token.contract_address}`;
+        const r = await fetch(url);
+        const data = await r.json() as any;
+        const pair = data?.pairs?.[0];
+        if (!pair) continue;
+        const marketCap = pair.marketCap || pair.fdv || 0;
+        const volume = pair.volume?.h24 || 0;
+        await pool.query(
+          'UPDATE tokens SET market_cap = $1, volume_usd = $2 WHERE id = $3',
+          [marketCap.toString(), volume.toString(), token.id]
+        );
+        updated++;
+      } catch (e) {
+        console.error(`Error syncing ${(token as any).ticker}:`, e);
+      }
+    }
+    return res.json({ success: true, updated });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+setInterval(async () => {
+  try {
+    const tokens = await pool.query(
+      'SELECT id, contract_address, ticker FROM tokens WHERE contract_address IS NOT NULL'
+    );
+    for (const token of tokens.rows) {
+      try {
+        const url = `https://api.dexscreener.com/latest/dex/tokens/${token.contract_address}`;
+        const r = await fetch(url);
+        const data = await r.json() as any;
+        const pair = data?.pairs?.[0];
+        if (!pair) continue;
+        const marketCap = pair.marketCap || pair.fdv || 0;
+        const volume = pair.volume?.h24 || 0;
+        await pool.query(
+          'UPDATE tokens SET market_cap = $1, volume_usd = $2 WHERE id = $3',
+          [marketCap.toString(), volume.toString(), token.id]
+        );
+      } catch (e) {}
+    }
+    console.log('Price sync done');
+  } catch (e) {}
+}, 5 * 60 * 1000);
+
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
