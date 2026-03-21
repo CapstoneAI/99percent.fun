@@ -50,9 +50,17 @@ export default function CreatePage() {
           body: JSON.stringify({ image: base64 })
         })
         const data = await res.json()
-        if (data.url) setImageUrl(data.url)
+        if (data.url) {
+        setImageUrl(data.url)
+        console.log('Image uploaded:', data.url)
+      } else {
+        setError('Upload failed: no URL returned')
+      }
       } catch (err) {
         console.error('Image upload failed', err)
+        setError('Image upload failed. Please try again.')
+        setImageUrl('')
+        setImagePreview('')
       }
     }
     reader.readAsDataURL(file)
@@ -62,7 +70,6 @@ export default function CreatePage() {
     if (!isConnected || !address) { setError('Connect your wallet first'); return }
     if (!walletClient) { setError('Wallet not ready'); return }
     if (!name || !ticker) { setError('Name and ticker are required'); return }
-    if (!imageUrl) { setError('Please upload a token image'); return }
     if (!imageUrl) { setError('Please upload a token image'); return }
 
     setLoading(true)
