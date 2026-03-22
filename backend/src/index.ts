@@ -354,4 +354,23 @@ setInterval(async () => {
   } catch (e) {}
 }, 5 * 60 * 1000);
 
+
+// 0x swap quote proxy (evita CORS)
+app.get('/api/swap/quote', async (req: any, res: any) => {
+  try {
+    const params = new URLSearchParams(req.query as any).toString()
+    const response = await fetch(`https://api.0x.org/swap/permit2/quote?${params}`, {
+      headers: {
+        '0x-api-key': process.env.OX_API_KEY || '',
+        '0x-version': 'v2',
+      }
+    })
+    const data = await response.json()
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    return res.json(data)
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message })
+  }
+})
+
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
