@@ -31,7 +31,7 @@ export default function TradeWidget({ contractAddress, tokenSymbol, tokenName, l
         taker: address,
       })
       const res = await fetch(`https://api.0x.org/swap/permit2/quote?${params}`, {
-        headers: { '0x-api-key': 'placeholder', '0x-version': 'v2' }
+        headers: { '0x-api-key': process.env.NEXT_PUBLIC_0X_API_KEY || '', '0x-version': 'v2' }
       })
       const data = await res.json()
       if (data.issues?.balance) { setStatus('Insufficient balance'); setLoading(false); return }
