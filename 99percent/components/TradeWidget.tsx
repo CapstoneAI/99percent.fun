@@ -33,10 +33,12 @@ export default function TradeWidget({ contractAddress, tokenSymbol, tokenName, l
       const res = await fetch(`https://99percentfun-production.up.railway.app/api/swap/quote?${params}`)
       const data = await res.json()
       if (data.issues?.balance) { setStatus('Insufficient balance'); setLoading(false); return }
+      console.log('0x quote:', JSON.stringify(data, null, 2))
       setQuote(data)
       const buyAmt = isBuy ? (Number(data.buyAmount) / 1e18).toFixed(2) : (Number(data.buyAmount) / 1e18).toFixed(6)
       setStatus(`You get ≈ ${buyAmt} ${isBuy ? tokenSymbol : 'ETH'}`)
     } catch (e) {
+      console.error('Quote error:', e)
       setStatus('Quote failed - try again')
     }
     setLoading(false)
@@ -57,6 +59,7 @@ export default function TradeWidget({ contractAddress, tokenSymbol, tokenName, l
       setQuote(null)
       setAmount('')
     } catch (e: any) {
+      console.error('Swap error:', e)
       setStatus(e?.message?.includes('User rejected') ? 'Cancelled' : 'Swap failed')
     }
     setLoading(false)
