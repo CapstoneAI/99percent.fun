@@ -7,7 +7,7 @@ const PRESETS = ['0.01', '0.05', '0.1']
 const FONT_MONO = "'Space Mono',monospace"
 const FONT_SYNE = "'Syne',sans-serif"
 
-export default function TradeWidget({ contractAddress, tokenSymbol }: { contractAddress: string, tokenSymbol: string }) {
+export default function TradeWidget({ contractAddress, tokenSymbol, tokenName, launchType }: { contractAddress: string, tokenSymbol: string, tokenName?: string, launchType?: string }) {
   const [tab, setTab] = useState<'buy' | 'sell'>('buy')
   const [amount, setAmount] = useState('')
   const [loading, setLoading] = useState(false)
